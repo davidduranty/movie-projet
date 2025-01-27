@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MovieController } from './controllers/movie.controller';
+import { MovieService } from './services/movie.service';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import mikroOrmConfig from './mikro-orm.config';
+
+
+
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    MikroOrmModule.forRoot(mikroOrmConfig),
+  ],
+  controllers: [MovieController],
+  providers: [MovieService],
 })
 export class AppModule {}
