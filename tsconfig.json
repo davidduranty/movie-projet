@@ -19,4 +19,12 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
   }
+  ,
+  "include": [
+    "src/**/*.ts",
+    "backend/**/*.ts"  
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,5 +1,7 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiProperty } from "@nestjs/swagger";
+import { Movie } from "./movie.entity";
+import { Productor } from "./productor.entity";
 
 @Entity()
 class Actor {
@@ -32,6 +34,12 @@ class Actor {
     })
     @Property()
     country: string;
+
+    @OneToMany(() => Movie, movie => movie.title)
+    movie = new Collection<Movie>(this)
+    
+    @OneToMany(() => Productor, productor => productor.lastname)
+    productor = new Collection<Productor>(this)
 }
 
 export {Actor}

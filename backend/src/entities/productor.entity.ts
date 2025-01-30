@@ -1,5 +1,7 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiProperty } from "@nestjs/swagger";
+import { Actor } from "./actor.entity";
+import { Movie } from "./movie.entity";
 
 @Entity()
 class Productor {
@@ -30,6 +32,11 @@ class Productor {
     })
     @Property()
     now: boolean
+    @OneToMany(() => Actor, event => event.lastname)
+    actor = new Collection<Actor>(this)
+
+    @OneToMany(() => Movie, event => event.title)
+    movie = new Collection<Movie>(this)
 }
 
 export {Productor}
