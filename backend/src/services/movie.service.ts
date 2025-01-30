@@ -7,9 +7,7 @@ class MovieService {
     private readonly orm: MikroORM,
     private readonly em: EntityManager,
   ) {}
-  getHello(): string {
-    return 'Hello World!';
-  }
+ 
 }
 
 export {MovieService}
