@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Movie } from "./movie.entity";
 import { Productor } from "./productor.entity";
 
-@Entity()
+@Entity({schema: 'movie'})
 class Actor {
 
     @PrimaryKey()
@@ -35,11 +35,11 @@ class Actor {
     @Property()
     country: string;
 
-    @OneToMany(() => Movie, movie => movie.title)
-    movie = new Collection<Movie>(this)
+    // @OneToMany(() => Movie, movie => movie.title)
+    // movie = new Collection<Movie>(this)
     
-    @OneToMany(() => Productor, productor => productor.lastname)
-    productor = new Collection<Productor>(this)
+    // @OneToMany(() => Productor, productor => productor.lastname)
+    // productor = new Collection<Productor>(this)
 }
 
 export {Actor}

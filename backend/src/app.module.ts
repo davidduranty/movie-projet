@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { MovieController } from './controllers/movie.controller';
-import { MovieService } from './services/movie.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import mikroOrmConfig from './mikro-orm.config';
+import {config as mikroOrmConfig} from './mikro-orm.config';
+import { CinemaModule } from './cinema.module';
 
 
 
@@ -10,8 +9,9 @@ import mikroOrmConfig from './mikro-orm.config';
 @Module({
   imports: [
     MikroOrmModule.forRoot(mikroOrmConfig),
+    CinemaModule
   ],
-  controllers: [MovieController],
-  providers: [MovieService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
