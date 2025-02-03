@@ -1,45 +1,42 @@
-import { Collection, Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiProperty } from "@nestjs/swagger";
 import { Movie } from "./movie.entity";
 import { Productor } from "./productor.entity";
+import { BaseEntity } from './base.entity';
 
-@Entity()
-class Actor {
+@Entity({ schema: 'movie' })
+class Actor extends BaseEntity {
 
     @PrimaryKey()
-    id: number;
+    id!: number;
 
     @ApiProperty({
         description: "Nom de l'acteur",
         example: " Doe"
     })
-    @Property()
+    @Property({type: "string"})
     lastname: string;
 
     @ApiProperty({
         description: "Prénom de l'acteur",
         example: "John"
     })
-    @Property()
+    @Property({type: "string"})
     firstname: string;
-    @ApiProperty({
-        description: "Date de naissance de l'acteur",
-        example: "1990-01-01"
-    })
-    @Property()
-    birthdate: Date;
+   
+
     @ApiProperty({
         description: "Pays",
-        example:"USA"
+        example: "USA"
     })
-    @Property()
+    @Property({type: "string"})
     country: string;
 
-    @OneToMany(() => Movie, movie => movie.title)
-    movie = new Collection<Movie>(this)
-    
-    @OneToMany(() => Productor, productor => productor.lastname)
-    productor = new Collection<Productor>(this)
+    @ManyToOne(() => Productor)
+    productor?: Productor;
+
+    @ManyToMany({ entity: () => Movie, mappedBy: 'actor' })
+    dataMovies = new Collection<Movie>(this);
 }
 
 export {Actor}

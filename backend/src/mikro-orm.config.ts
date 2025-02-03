@@ -1,13 +1,22 @@
-import { Migrator } from '@mikro-orm/migrations';
-import { MikroORM } from '@mikro-orm/postgresql'; // ou un autre pilote selon ta base de données
+import { Logger } from '@nestjs/common';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
-export default {
-    entities: ['./dist/entities'], // Spécifie le chemin vers tes entités compilées (en JS) après la transpilation
-    entitiesTs: ['./src/entities'], // path to your TS entities (source), relative to `baseDir`
+
+const logger = new Logger('mikroORM')
+
+const config ={
+    ensureDatabase: true,
+    autoLoadEntities: true,
+    driver: PostgreSqlDriver,
     dbName: 'movie', // Nom de ta base de données
-    type: 'postgresql', // Type de base de données que tu utilises
-    user: 'david-d', // Nom d'utilisateur de la base de données
+    host: 'localhost',
+    port: 5434,
+    user: 'david', // Nom d'utilisateur de la base de données
     password: 'Tyranisus!1', // Mot de passe pour la base de données
+    highlighter: new SqlHighlighter(),
     debug: true, // Optionnel : Activer les logs SQL pour débogage
-    extensions: [Migrator],
-} as Parameters<typeof MikroORM.init>[0];
+    logger: logger.log.bind(logger),
+}
+
+export {config}
