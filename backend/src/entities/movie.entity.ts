@@ -11,20 +11,21 @@ class Movie {
         description: "Nom du film",
         example: "Indiana Jones"
     })
-    @Property()
+    @Property({type: "string"})
     title: string;
 
     @ApiProperty({
         description: "Année de sortie du film",
-        example: 1984
+        example: "1984"
     })
-    @Property()
-    date: number;
+    @Property({type: "date"})
+    date: Date;
+
     @ApiProperty({
         description: "Genre du film",
         example: "Aventure"
     })
-    @Property()
+    @Property({type: "string"})
     genre: string;
 
     @ManyToMany({ entity: () => Actor, serializer: value => value, serializedName: 'actor'})

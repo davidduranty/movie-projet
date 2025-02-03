@@ -2,9 +2,10 @@ import { Collection, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryKey, Prope
 import { ApiProperty } from "@nestjs/swagger";
 import { Movie } from "./movie.entity";
 import { Productor } from "./productor.entity";
+import { BaseEntity } from './base.entity';
 
 @Entity({ schema: 'movie' })
-class Actor {
+class Actor extends BaseEntity {
 
     @PrimaryKey()
     id!: number;
@@ -13,27 +14,22 @@ class Actor {
         description: "Nom de l'acteur",
         example: " Doe"
     })
-    @Property()
+    @Property({type: "string"})
     lastname: string;
 
     @ApiProperty({
         description: "Prénom de l'acteur",
         example: "John"
     })
-    @Property()
+    @Property({type: "string"})
     firstname: string;
-    @ApiProperty({
-        description: "Date de naissance de l'acteur",
-        example: "1990-01-01"
-    })
-    @Property({type: "date"})
-    birthdate: Date;
+   
 
     @ApiProperty({
         description: "Pays",
         example: "USA"
     })
-    @Property()
+    @Property({type: "string"})
     country: string;
 
     @ManyToOne(() => Productor)

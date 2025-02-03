@@ -1,36 +1,38 @@
-import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
+import { BaseEntity, Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiProperty } from "@nestjs/swagger";
 import { Actor } from "./actor.entity";
 import { Movie } from "./movie.entity";
 
 @Entity({schema: 'movie'})
-class Productor {
+class Productor extends BaseEntity {
     @PrimaryKey()
     id!: number
 
     @ApiProperty({
         description: "Nom du producteur",
         example: "Speilberg"
-    })
-    @Property()
+    }) 
+    @Property({type: "string"})
     lastname: string
     @ApiProperty({
         description: "Prénom du producteur",
         example: "Steven"
     })
-    @Property()
+    @Property({type: "string"})
     firstname: string
     @ApiProperty({
         description: "Son age",
         example: "70"
     })
-    @Property()
+        
+    @Property({type: "number"})
     age: number
+
     @ApiProperty({
         description: " Vivant",
         example: true
     })
-    @Property()
+    @Property({type: "boolean"})
     now: boolean
     @OneToMany(() => Actor, event => event.productor)
     actors = new Collection<Actor>(this)

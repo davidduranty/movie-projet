@@ -7,12 +7,12 @@ const logger = new Logger('mikroORM')
 
 const config ={
     ensureDatabase: true,
-    // autoLoadEntities: true,
+    autoLoadEntities: true,
     driver: PostgreSqlDriver,
     dbName: 'movie', // Nom de ta base de données
     host: 'localhost',
-    port: 5432,
-    user: 'david-d', // Nom d'utilisateur de la base de données
+    port: 5434,
+    user: 'david', // Nom d'utilisateur de la base de données
     password: 'Tyranisus!1', // Mot de passe pour la base de données
     highlighter: new SqlHighlighter(),
     debug: true, // Optionnel : Activer les logs SQL pour débogage
