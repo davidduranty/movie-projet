@@ -6,7 +6,7 @@ import { Movie } from "./movie.entity";
 @Entity({schema: 'movie'})
 class Productor {
     @PrimaryKey()
-    id: string
+    id!: number
 
     @ApiProperty({
         description: "Nom du producteur",
@@ -32,11 +32,11 @@ class Productor {
     })
     @Property()
     now: boolean
-    @OneToMany(() => Actor, event => event.lastname)
-    actor = new Collection<Actor>(this)
+    @OneToMany(() => Actor, event => event.productor)
+    actors = new Collection<Actor>(this)
 
-    // @OneToMany(() => Movie, event => event.title)
-    // movie = new Collection<Movie>(this)
+    @ManyToMany({ entity: () => Movie, mappedBy: 'productor' })
+    dataMovies = new Collection<Movie>(this);
 }
 
 export {Productor}

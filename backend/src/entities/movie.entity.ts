@@ -5,7 +5,7 @@ import { Actor } from "./actor.entity";
 
 @Entity({schema: 'movie'})
 class Movie {
-    @PrimaryKey() id: string;
+    @PrimaryKey() id!: number;
 
     @ApiProperty({
         description: "Nom du film",
@@ -27,11 +27,11 @@ class Movie {
     @Property()
     genre: string;
 
-    // @ManyToMany({ entity: () => Actor, serializer: value => value, serializedName: 'actor'})
-    // actor: Collection<Actor> = new Collection<Actor>(this)
+    @ManyToMany({ entity: () => Actor, serializer: value => value, serializedName: 'actor'})
+    actor: Collection<Actor> = new Collection<Actor>(this)
     
-    // @ManyToMany({ entity:() => Productor, serializer: value => value, serializedName: 'productor'})
-    // productor: Collection<Productor> = new Collection<Productor>(this)
+    @ManyToMany({ entity:() => Productor, serializer: value => value, serializedName: 'productor'})
+    productor: Collection<Productor> = new Collection<Productor>(this)
 }
 
 export { Movie}
