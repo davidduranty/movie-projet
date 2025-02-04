@@ -1,17 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
-import { Productor } from './entities/productor.entity';
-import { Movie } from './entities/movie.entity';
-import { Actor } from './entities/actor.entity';
-
-
-
 
 const logger = new Logger('mikroORM')
 
 const config = {
-    entities: [Movie, Actor, Productor],
     ensureDatabase: true,
     autoLoadEntities: true,
     driver: PostgreSqlDriver,
@@ -23,7 +16,6 @@ const config = {
     highlighter: new SqlHighlighter(),
     debug: true, // Optionnel : Activer les logs SQL pour débogage
     logger: logger.log.bind(logger),
-    logLevel: 'trace',
 }
 
 export {config}

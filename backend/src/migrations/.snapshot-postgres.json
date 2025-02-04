@@ -1,0 +1,373 @@
+{
+  "namespaces": [
+    "movie"
+  ],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "date": {
+          "name": "date",
+          "type": "date",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "date"
+        },
+        "genre": {
+          "name": "genre",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        }
+      },
+      "name": "movie",
+      "schema": "movie",
+      "indexes": [
+        {
+          "keyName": "movie_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "lastname": {
+          "name": "lastname",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "firstname": {
+          "name": "firstname",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "age": {
+          "name": "age",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "now": {
+          "name": "now",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "productor",
+      "schema": "movie",
+      "indexes": [
+        {
+          "keyName": "productor_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "productor_id": {
+          "name": "productor_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "movie_productor",
+      "schema": "movie",
+      "indexes": [
+        {
+          "keyName": "movie_productor_pkey",
+          "columnNames": [
+            "movie_id",
+            "productor_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "movie_productor_movie_id_foreign": {
+          "constraintName": "movie_productor_movie_id_foreign",
+          "columnNames": [
+            "movie_id"
+          ],
+          "localTableName": "movie.movie_productor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "movie.movie",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "movie_productor_productor_id_foreign": {
+          "constraintName": "movie_productor_productor_id_foreign",
+          "columnNames": [
+            "productor_id"
+          ],
+          "localTableName": "movie.movie_productor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "movie.productor",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "start": {
+          "name": "start",
+          "type": "date",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "date"
+        },
+        "end": {
+          "name": "end",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "lastname": {
+          "name": "lastname",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "firstname": {
+          "name": "firstname",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "productor_id": {
+          "name": "productor_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "actor",
+      "schema": "movie",
+      "indexes": [
+        {
+          "keyName": "actor_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "actor_productor_id_foreign": {
+          "constraintName": "actor_productor_id_foreign",
+          "columnNames": [
+            "productor_id"
+          ],
+          "localTableName": "movie.actor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "movie.productor",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "movie_actor",
+      "schema": "movie",
+      "indexes": [
+        {
+          "keyName": "movie_actor_pkey",
+          "columnNames": [
+            "movie_id",
+            "actor_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "movie_actor_movie_id_foreign": {
+          "constraintName": "movie_actor_movie_id_foreign",
+          "columnNames": [
+            "movie_id"
+          ],
+          "localTableName": "movie.movie_actor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "movie.movie",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "movie_actor_actor_id_foreign": {
+          "constraintName": "movie_actor_actor_id_foreign",
+          "columnNames": [
+            "actor_id"
+          ],
+          "localTableName": "movie.movie_actor",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "movie.actor",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    }
+  ],
+  "nativeEnums": {}
+}
