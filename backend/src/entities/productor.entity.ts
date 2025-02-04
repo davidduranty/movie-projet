@@ -6,34 +6,37 @@ import { Movie } from "./movie.entity";
 @Entity({schema: 'movie'})
 class Productor extends BaseEntity {
     @PrimaryKey()
-    id!: number
+    id!: number;
 
     @ApiProperty({
         description: "Nom du producteur",
         example: "Speilberg"
-    }) 
-    @Property({type: "string"})
-    lastname: string
+    })
+    @Property({ type: "string" })
+    lastname: string;
+
     @ApiProperty({
         description: "Prénom du producteur",
         example: "Steven"
     })
-    @Property({type: "string"})
-    firstname: string
+    @Property({ type: "string" })
+        
+    firstname: string;
     @ApiProperty({
         description: "Son age",
         example: "70"
     })
         
-    @Property({type: "number"})
-    age: number
+    @Property({ type: "number" })
+    age: number;
 
     @ApiProperty({
         description: " Vivant",
         example: true
     })
-    @Property({type: "boolean"})
-    now: boolean
+    @Property({ type: "boolean" })
+    now: boolean;
+
     @OneToMany(() => Actor, event => event.productor)
     actors = new Collection<Actor>(this)
 
