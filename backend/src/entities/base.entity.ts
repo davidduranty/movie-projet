@@ -1,11 +1,11 @@
-import { PrimaryKey, Property } from '@mikro-orm/core';
+import { DateType, PrimaryKey, Property } from '@mikro-orm/core';
 
 export abstract class BaseEntity {
 
-  @PrimaryKey()
+  @PrimaryKey({autoincrement: true})
   id!: number;
 
-  @Property()
+  @Property({type: DateType, nullable: true})
     start = new Date();
 
   @Property({ onUpdate: () => new Date() })
