@@ -1,4 +1,4 @@
-import { Collection, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
+import { Collection, Entity, ManyToMany, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiProperty } from "@nestjs/swagger";
 import { Movie } from "./movie.entity";
 import { Productor } from "./productor.entity";
@@ -7,7 +7,7 @@ import { BaseEntity } from './base.entity';
 @Entity({ schema: 'movie' })
 class Actor extends BaseEntity {
 
-    @PrimaryKey()
+    @PrimaryKey({autoincrement: true})
     id!: number;
 
     @ApiProperty({

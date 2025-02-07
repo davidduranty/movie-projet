@@ -8,7 +8,7 @@ export abstract class BaseEntity {
   @Property({type: DateType, nullable: true})
     start = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onUpdate: () => new Date(), nullable: true })
     end = new Date();
 
 }
