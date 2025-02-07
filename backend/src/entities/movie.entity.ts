@@ -5,7 +5,7 @@ import { Actor } from "./actor.entity";
 
 @Entity({schema: 'movie'})
 class Movie {
-    @PrimaryKey() id!: number;
+    @PrimaryKey({autoincrement: true}) id!: number;
 
     @ApiProperty({
         description: "Nom du film",

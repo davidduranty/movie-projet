@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20250204182436 extends Migration {
+export class Migration20250205170352 extends Migration {
 
   override async up(): Promise<void> {
     this.addSql(`create schema if not exists "movie";`);
@@ -10,7 +10,7 @@ export class Migration20250204182436 extends Migration {
 
     this.addSql(`create table "movie"."movie_productor" ("movie_id" int not null, "productor_id" int not null, constraint "movie_productor_pkey" primary key ("movie_id", "productor_id"));`);
 
-    this.addSql(`create table "movie"."actor" ("id" serial primary key, "start" date null, "end" timestamptz not null, "lastname" varchar(255) not null, "firstname" varchar(255) not null, "country" varchar(255) not null, "productor_id" int not null);`);
+    this.addSql(`create table "movie"."actor" ("id" serial primary key, "start" date null, "end" timestamptz null, "lastname" varchar(255) not null, "firstname" varchar(255) not null, "country" varchar(255) not null, "productor_id" int not null);`);
 
     this.addSql(`create table "movie"."movie_actor" ("movie_id" int not null, "actor_id" int not null, constraint "movie_actor_pkey" primary key ("movie_id", "actor_id"));`);
 
