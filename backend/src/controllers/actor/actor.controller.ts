@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Actor } from 'backend/src/entities/actor.entity';
 import { ActorDto } from 'backend/src/models/actor.dto';
+import { ProductorDto } from 'backend/src/models/productor.dto';
 import { ActorService } from 'backend/src/services/actor/actor.service';
 
 @Controller('actors')
@@ -40,8 +41,11 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'New actor added',
   })
-  public async create(@Body() actorDto: ActorDto) {
-    return await this._actorService.post(actorDto);
+  public async create(
+    @Body() data: { actorDto: ActorDto; productorDto: ProductorDto },
+  ) {
+    const { actorDto, productorDto } = data;
+    return await this._actorService.post(actorDto, productorDto);
   }
 }
 

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDate } from 'class-validator';
+import { IsString, IsOptional, IsInt } from 'class-validator';
 
 class ActorDto {
   @IsString()
@@ -15,6 +15,10 @@ class ActorDto {
 
   @IsOptional()
   end?: Date;
+
+  @IsOptional()
+  @IsInt()
+  productorId?: number;
 }
 
 export { ActorDto };
