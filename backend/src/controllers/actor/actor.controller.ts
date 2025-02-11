@@ -5,7 +5,7 @@ import { ActorService } from 'backend/src/services/actor/actor.service';
 
 @Controller('actors')
 class ActorController {
-  constructor(public readonly _actorService: ActorService) {}
+  constructor(private readonly _actorService: ActorService) {}
 
   @Get('all')
   @ApiOperation({

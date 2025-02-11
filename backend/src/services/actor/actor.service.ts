@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { EntityRepository, LoadStrategy } from '@mikro-orm/core';
+import { EntityRepository, LoadStrategy, QueryOrder } from '@mikro-orm/core';
 import { Actor } from 'backend/src/entities/actor.entity';
 
 @Injectable()
@@ -24,6 +24,8 @@ class ActorService {
     const actors = await this._actorService.find(
       { id: id },
       {
+        populate: ['productor', 'dataMovies'],
+        populateOrderBy: { productor: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
         limit: 10,
         offset: 0,
