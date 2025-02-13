@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -29,7 +30,7 @@ class ActorController {
     return await this._actorService.getAll();
   }
 
-  @Get()
+  @Get(':id')
   @ApiOperation({
     summary: 'Get a actor by id',
   })
@@ -37,7 +38,7 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor by id',
   })
-  public async get(@Query('id') id: number): Promise<Actor[]> {
+  public async get(@Param('id') id: number): Promise<ActorDto[]> {
     return await this._actorService.getById(id);
   }
 
@@ -63,8 +64,34 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'Edit actor with country filter',
   })
-  public async getCountry(@Query('country') country: string): Promise<Actor[]> {
+  public async getCountry(
+    @Query('country') country: string,
+  ): Promise<ActorDto[]> {
     return await this._actorService.getByCountry(country);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Get a actor by name',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A actor by name',
+  })
+  public async getName(@Query('name') name: string): Promise<ActorDto[]> {
+    return await this._actorService.getByName(name);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a actor by id',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A actor delete by id',
+  })
+  public async removeId(@Param('id') id: number): Promise<void> {
+    await this._actorService.removeId(id);
   }
 }
 

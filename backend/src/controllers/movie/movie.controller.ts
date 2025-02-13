@@ -1,8 +1,17 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { MovieService } from '../../services/movie/movie.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpStatus } from '../../utils/http-status';
 import { Movie } from '../../entities/movie.entity';
+import { MovieDto } from 'backend/src/models/movie.dto';
 
 @Controller('movies')
 class MovieController {
@@ -29,7 +38,7 @@ class MovieController {
     description: 'All movies',
   })
   public async getAllMovies() // @Query('date') dateString?: string,
-  : Promise<Movie[]> {
+  : Promise<MovieDto[]> {
     // const date = dateString ? new Date(dateString) : null;
     return await this._movieService.getAll();
   }
@@ -42,8 +51,33 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie by id',
   })
-  public async get(@Param('id') id: number): Promise<Movie[]> {
-    return await this._movieService.get(id);
+  public async get(@Param('id') id: number): Promise<MovieDto[]> {
+    return await this._movieService.getById(id);
+  }
+
+  @Post('create')
+  @ApiOperation({
+    summary: 'Add a movie',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A movie add',
+  })
+  public async addMovie(@Body() data: { movieDto: MovieDto }) {
+    const { movieDto } = data;
+    return await this._movieService.post(movieDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a movie by id',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A movie delete by id',
+  })
+  public async removeId(@Param('id') id: number): Promise<void> {
+    await this._movieService.removeId(id);
   }
 }
 
