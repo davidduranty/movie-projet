@@ -19,6 +19,10 @@ class ActorDto {
   @IsOptional()
   @IsInt()
   productorId?: number;
+
+  @IsOptional()
+  @IsInt()
+  movieId?: number;
 }
 
 export { ActorDto };
