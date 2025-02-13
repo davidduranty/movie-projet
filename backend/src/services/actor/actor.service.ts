@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   EntityManager,
   EntityRepository,
+  FilterQuery,
   LoadStrategy,
   QueryOrder,
 } from '@mikro-orm/core';
@@ -48,10 +49,10 @@ class ActorService {
     return actors;
   }
   public async getByCountry(country?: string): Promise<ActorDto[]> {
-    const filters: any = {};
+    const filters: FilterQuery<Actor> = {};
 
     if (country) {
-      filters.country = { $ilike: country };
+      filters['country'] = { $ilike: `%${country}%` };
     }
 
     const actors = await this._actorService.find(filters, {

@@ -5,6 +5,7 @@ import {
   LoadStrategy,
   QueryOrder,
   EntityManager,
+  FilterQuery,
 } from '@mikro-orm/core';
 import { Movie } from '../../entities/movie.entity';
 import { MovieDto } from 'backend/src/models/movie.dto';
@@ -33,10 +34,10 @@ class MovieService {
     return movies;
   }
 
-  public async getByName(lastname: string): Promise<MovieDto[]> {
-    let movieName: any = {};
-    if (lastname) {
-      movieName.lastname = { $ilike: lastname };
+  public async getByName(title: string): Promise<MovieDto[]> {
+    let movieName: FilterQuery<Movie> = {};
+    if (title) {
+      movieName['title'] = { $ilike: `%${title}%` };
     }
     const movies = await this._movieService.find(movieName, {
       populate: ['actor'],
