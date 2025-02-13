@@ -33,7 +33,7 @@ class ActorService {
     return actors;
   }
 
-  public async getById(id: number): Promise<Actor[]> {
+  public async getById(id: number): Promise<ActorDto[]> {
     const actors = await this._actorService.find(
       { id: id },
       {
@@ -47,7 +47,7 @@ class ActorService {
     );
     return actors;
   }
-  public async getByCountry(country?: string): Promise<Actor[]> {
+  public async getByCountry(country?: string): Promise<ActorDto[]> {
     const filters: any = {};
 
     if (country) {
@@ -62,13 +62,35 @@ class ActorService {
       offset: 0,
       orderBy: { id: 'ASC' },
     });
+
+    // Appliquer le filtre en mémoire si un pays est fourni
+    // if (country) {
+    //   return actors.filter((actor) => actor.country &&
+    //  actor.country.includes(country));
+    // }
+    return actors;
+  }
+
+  public async getByName(lastname: string): Promise<ActorDto[]> {
+    let filterName: any = {};
+    if (lastname) {
+      filterName.lastname = { $ilike: lastname };
+    }
+    const actors = await this._actorService.find(filterName, {
+      populate: ['productor', 'dataMovies'],
+      populateOrderBy: { productor: { id: QueryOrder.ASC } },
+      strategy: LoadStrategy.SELECT_IN,
+      limit: 10,
+      offset: 0,
+      orderBy: { id: 'ASC' },
+    });
     return actors;
   }
 
   public async post(
     actorDto: ActorDto,
     productorDto: ProductorDto,
-  ): Promise<Actor> {
+  ): Promise<ActorDto> {
     const addActor = new Actor();
     addActor.lastname = actorDto.lastname;
     addActor.firstname = actorDto.firstname;
@@ -111,6 +133,13 @@ class ActorService {
     this._em.persistAndFlush(addActor);
 
     return addActor;
+  }
+
+  public async removeId(id: number): Promise<void> {
+    await this._actorService.nativeDelete({ id });
+
+    // const remainingActors = await this._actorService.findAll();
+    // return remainingActors;
   }
 }
 
