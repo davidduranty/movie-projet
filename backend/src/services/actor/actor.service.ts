@@ -25,13 +25,15 @@ class ActorService {
     const actors = await this._actorService.find(
       {},
       {
+        populate: ['productor'],
+        populateOrderBy: { productor: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
       },
     );
     return actors;
   }
 
-  public async get(id: number): Promise<Actor[]> {
+  public async getById(id: number): Promise<Actor[]> {
     const actors = await this._actorService.find(
       { id: id },
       {
@@ -45,6 +47,23 @@ class ActorService {
     );
     return actors;
   }
+  public async getByCountry(country?: string): Promise<Actor[]> {
+    const filters: any = {};
+
+    if (country) {
+      filters.country = { $ilike: country };
+    }
+
+    const actors = await this._actorService.find(filters, {
+      populate: ['productor', 'dataMovies'],
+      populateOrderBy: { productor: { id: QueryOrder.ASC } },
+      strategy: LoadStrategy.SELECT_IN,
+      limit: 10,
+      offset: 0,
+      orderBy: { id: 'ASC' },
+    });
+    return actors;
+  }
 
   public async post(
     actorDto: ActorDto,
@@ -55,8 +74,8 @@ class ActorService {
     addActor.firstname = actorDto.firstname;
     addActor.country = actorDto.country;
 
-    if (actorDto.start) actorDto.start = actorDto.start;
-    if (actorDto.end) actorDto.end = actorDto.end;
+    actorDto.start = actorDto.start;
+    actorDto.end = actorDto.end;
 
     if (actorDto.productorId) {
       const productor = await this._productorService.findOne(

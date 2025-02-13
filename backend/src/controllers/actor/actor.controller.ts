@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Actor } from 'backend/src/entities/actor.entity';
 import { ActorDto } from 'backend/src/models/actor.dto';
@@ -21,7 +29,7 @@ class ActorController {
     return await this._actorService.getAll();
   }
 
-  @Get(':id')
+  @Get()
   @ApiOperation({
     summary: 'Get a actor by id',
   })
@@ -29,8 +37,8 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor by id',
   })
-  public async get(@Param('id') id: number): Promise<Actor[]> {
-    return await this._actorService.get(id);
+  public async get(@Query('id') id: number): Promise<Actor[]> {
+    return await this._actorService.getById(id);
   }
 
   @Post('add-actor')
@@ -46,6 +54,17 @@ class ActorController {
   ) {
     const { actorDto, productorDto } = data;
     return await this._actorService.post(actorDto, productorDto);
+  }
+  @Get('country')
+  @ApiOperation({
+    summary: 'Search a actor vy country',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Edit actor with country filter',
+  })
+  public async getCountry(@Query('country') country: string): Promise<Actor[]> {
+    return await this._actorService.getByCountry(country);
   }
 }
 
