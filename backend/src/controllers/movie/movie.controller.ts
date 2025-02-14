@@ -43,7 +43,7 @@ class MovieController {
     return await this._movieService.getAll();
   }
 
-  @Get(':id')
+  @Get('id/:id')
   @ApiOperation({
     summary: 'Get a movie by id',
   })
@@ -55,9 +55,26 @@ class MovieController {
     return await this._movieService.getById(id);
   }
 
+  @Get('filter-by-date')
+  @ApiOperation({
+    summary: 'Filter movies by release date range',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A movie add',
+  })
+  public async getMoviesByDate(
+    @Query('start') start?: string,
+    @Query('end') end?: string,
+  ): Promise<MovieDto[]> {
+    const startDate = start ? new Date(start) : undefined;
+    const endDate = end ? new Date(end) : undefined;
+    return await this._movieService.getMoviesByDateRange(startDate, endDate);
+  }
+
   @Post('create')
   @ApiOperation({
-    summary: 'Add a movie',
+    summary: 'Movies within a date range',
   })
   @ApiResponse({
     status: HttpStatus.OK,

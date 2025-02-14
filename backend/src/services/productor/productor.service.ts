@@ -57,5 +57,9 @@ class ProductorService {
 
     return addProductor;
   }
+
+  public async removeProductore(id: number): Promise<void> {
+    await this._productorService.nativeDelete({ id });
+  }
 }
 export { ProductorService };
