@@ -66,6 +66,30 @@ class MovieService {
     return movie;
   }
 
+  public async getMoviesByDateRange(
+    start?: Date,
+    end?: Date,
+  ): Promise<MovieDto[]> {
+    const dateRange: FilterQuery<Movie> = {};
+
+    if (start && end) {
+      dateRange.date = { $gte: start, $lte: end };
+    } else if (start) {
+      dateRange.date = { $gte: start };
+    } else if (end) {
+      dateRange.date = { $lte: end };
+    }
+    const movies = await this._movieService.find(dateRange, {
+      // populate: [],
+      // populateOrderBy: { actor: { id: QueryOrder.ASC } },
+      strategy: LoadStrategy.SELECT_IN,
+      limit: 10,
+      offset: 0,
+      orderBy: { id: QueryOrder.ASC },
+    });
+    return movies;
+  }
+
   public async post(movieDto: MovieDto): Promise<MovieDto> {
     const addMovie = new Movie();
     addMovie.title = movieDto.title;

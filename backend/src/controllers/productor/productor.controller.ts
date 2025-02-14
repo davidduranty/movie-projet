@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Productor } from 'backend/src/entities/productor.entity';
 import { ProductorDto } from 'backend/src/models/productor.dto';
@@ -44,6 +44,18 @@ class ProductorController {
   public async post(@Body() data: { productorDto: ProductorDto }) {
     const { productorDto } = data;
     return await this._productorService.post(productorDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a productor',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A productor Delete',
+  })
+  public async remove(@Param('id') id: number): Promise<void> {
+    await this._productorService.removeProductore(id);
   }
 }
 export { ProductorController };
