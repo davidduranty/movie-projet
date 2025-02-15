@@ -1,11 +1,14 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { MovieService } from '../../services/movie/movie.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -43,7 +46,7 @@ class MovieController {
     return await this._movieService.getAll();
   }
 
-  @Get(':id')
+  @Get('id/:id')
   @ApiOperation({
     summary: 'Get a movie by id',
   })
@@ -51,19 +54,56 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie by id',
   })
-  public async get(@Param('id') id: number): Promise<MovieDto[]> {
-    return await this._movieService.getById(id);
+  public async get(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<MovieDto[]> {
+    const result = await this._movieService.getById(id);
+    if (!result) {
+      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+    }
+    return result;
   }
 
-  @Post('create')
+  @Get('filter-by-date')
   @ApiOperation({
-    summary: 'Add a movie',
+    summary: 'Filter movies by release date range',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'A movie add',
   })
-  public async addMovie(@Body() data: { movieDto: MovieDto }) {
+  public async getMoviesByDate(
+    @Query('start') start?: string,
+    @Query('end') end?: string,
+  ): Promise<MovieDto[]> {
+    const startDate = start ? new Date(start) : new Date(0);
+    const endDate = end ? new Date(end) : new Date();
+
+    if (start && isNaN(startDate.getTime())) {
+      throw new BadRequestException('Invalid start date format');
+    }
+    if (end && isNaN(endDate.getTime())) {
+      throw new BadRequestException('Invalid end date format');
+    }
+    return await this._movieService.getMoviesByDateRange(startDate, endDate);
+  }
+
+  @Post('create')
+  @ApiOperation({
+    summary: 'Movies within a date range',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A movie add',
+    type: MovieDto,
+  })
+  public async addMovie(
+    @Body(new ValidationPipe()) data: { movieDto: MovieDto },
+  ) {
     const { movieDto } = data;
     return await this._movieService.post(movieDto);
   }
@@ -76,8 +116,17 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie delete by id',
   })
-  public async removeId(@Param('id') id: number): Promise<void> {
-    await this._movieService.removeId(id);
+  public async removeId(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const result = await this._movieService.removeId(id);
+    if (!result) {
+      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+    }
   }
 }
 

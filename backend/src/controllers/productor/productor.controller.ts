@@ -1,6 +1,16 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Productor } from 'backend/src/entities/productor.entity';
+import { ProductorDto } from 'backend/src/models/productor.dto';
 import { ProductorService } from 'backend/src/services/productor/productor.service';
 import { HttpStatus } from 'backend/src/utils/http-status';
 
@@ -16,7 +26,7 @@ class ProductorController {
     status: HttpStatus.OK,
     description: 'All Productors',
   })
-  public async getAllProductor(): Promise<Productor[]> {
+  public async getAllProductor(): Promise<ProductorDto[]> {
     return await this._productorService.getAll();
   }
 
@@ -28,8 +38,55 @@ class ProductorController {
     status: HttpStatus.OK,
     description: 'A productor by id',
   })
-  public async get(@Param('id') id: number): Promise<Productor[]> {
-    return await this._productorService.get(id);
+  public async get(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<ProductorDto[]> {
+    const result = await this._productorService.get(id);
+    if (!result) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
+    return result;
+  }
+
+  @Post('add-productor')
+  @ApiOperation({
+    summary: 'Add a productor',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A productor add',
+    type: ProductorDto,
+  })
+  public async post(
+    @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
+  ) {
+    const { productorDto } = data;
+    return await this._productorService.post(productorDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a productor',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A productor Delete',
+  })
+  public async remove(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const productor = await this._productorService.removeProductore(id);
+    if (!productor) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
   }
 }
 export { ProductorController };
