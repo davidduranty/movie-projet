@@ -58,8 +58,13 @@ class ProductorService {
     return addProductor;
   }
 
-  public async removeProductore(id: number): Promise<void> {
-    await this._productorService.nativeDelete({ id });
+  public async removeProductore(id: number): Promise<boolean> {
+    const productor = await this._productorService.nativeDelete({ id });
+    if (!productor) {
+      return false;
+    }
+    await this._productorService.nativeDelete(productor);
+    return true;
   }
 }
 export { ProductorService };

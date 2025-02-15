@@ -5,8 +5,10 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Actor } from 'backend/src/entities/actor.entity';
@@ -38,8 +40,18 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor by id',
   })
-  public async get(@Param('id') id: number): Promise<ActorDto[]> {
-    return await this._actorService.getById(id);
+  public async get(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<ActorDto[]> {
+    const result = await this._actorService.getById(id);
+    if (!result) {
+      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`);
+    }
+    return result;
   }
 
   @Post('add-actor')
@@ -49,9 +61,14 @@ class ActorController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'New actor added',
+    type: ActorDto,
   })
   public async create(
-    @Body() data: { actorDto: ActorDto; productorDto: ProductorDto },
+    @Body(new ValidationPipe())
+    data: {
+      actorDto: ActorDto;
+      productorDto: ProductorDto;
+    },
   ) {
     const { actorDto, productorDto } = data;
     return await this._actorService.post(actorDto, productorDto);
@@ -90,8 +107,17 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor delete by id',
   })
-  public async removeId(@Param('id') id: number): Promise<void> {
-    await this._actorService.removeId(id);
+  public async removeId(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const actor = await this._actorService.removeId(id);
+    if (!actor) {
+      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`);
+    }
   }
 }
 

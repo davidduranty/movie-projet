@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Productor } from 'backend/src/entities/productor.entity';
 import { ProductorDto } from 'backend/src/models/productor.dto';
@@ -29,8 +38,18 @@ class ProductorController {
     status: HttpStatus.OK,
     description: 'A productor by id',
   })
-  public async get(@Param('id') id: number): Promise<ProductorDto[]> {
-    return await this._productorService.get(id);
+  public async get(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<ProductorDto[]> {
+    const result = await this._productorService.get(id);
+    if (!result) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
+    return result;
   }
 
   @Post('add-productor')
@@ -40,8 +59,11 @@ class ProductorController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'A productor add',
+    type: ProductorDto,
   })
-  public async post(@Body() data: { productorDto: ProductorDto }) {
+  public async post(
+    @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
+  ) {
     const { productorDto } = data;
     return await this._productorService.post(productorDto);
   }
@@ -54,8 +76,17 @@ class ProductorController {
     status: HttpStatus.OK,
     description: 'A productor Delete',
   })
-  public async remove(@Param('id') id: number): Promise<void> {
-    await this._productorService.removeProductore(id);
+  public async remove(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const productor = await this._productorService.removeProductore(id);
+    if (!productor) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
   }
 }
 export { ProductorController };

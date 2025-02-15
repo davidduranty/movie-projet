@@ -99,8 +99,13 @@ class MovieService {
     return addMovie;
   }
 
-  public async removeId(id: number): Promise<void> {
-    await this._movieService.nativeDelete({ id });
+  public async removeId(id: number): Promise<boolean> {
+    const movie = await this._movieService.nativeDelete({ id });
+    if (!movie) {
+      return false;
+    }
+    await this._movieService.nativeDelete(movie);
+    return true;
   }
   // private getDateFilter(date: Date | null): object {
   //   return date

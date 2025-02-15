@@ -136,8 +136,13 @@ class ActorService {
     return addActor;
   }
 
-  public async removeId(id: number): Promise<void> {
-    await this._actorService.nativeDelete({ id });
+  public async removeId(id: number): Promise<boolean> {
+    const actor = await this._actorService.nativeDelete({ id });
+    if (!actor) {
+      return false;
+    }
+    await this._actorService.nativeDelete(actor);
+    return true;
 
     // const remainingActors = await this._actorService.findAll();
     // return remainingActors;
