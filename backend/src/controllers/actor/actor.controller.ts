@@ -61,6 +61,7 @@ class ActorController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'New actor added',
+    type: ActorDto,
   })
   public async create(
     @Body(new ValidationPipe())

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -79,8 +80,15 @@ class MovieController {
     @Query('start') start?: string,
     @Query('end') end?: string,
   ): Promise<MovieDto[]> {
-    const startDate = start ? new Date(start) : undefined;
-    const endDate = end ? new Date(end) : undefined;
+    const startDate = start ? new Date(start) : new Date(0);
+    const endDate = end ? new Date(end) : new Date();
+
+    if (start && isNaN(startDate.getTime())) {
+      throw new BadRequestException('Invalid start date format');
+    }
+    if (end && isNaN(endDate.getTime())) {
+      throw new BadRequestException('Invalid end date format');
+    }
     return await this._movieService.getMoviesByDateRange(startDate, endDate);
   }
 
@@ -91,6 +99,7 @@ class MovieController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'A movie add',
+    type: MovieDto,
   })
   public async addMovie(
     @Body(new ValidationPipe()) data: { movieDto: MovieDto },

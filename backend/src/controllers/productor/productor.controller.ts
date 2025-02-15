@@ -59,6 +59,7 @@ class ProductorController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'A productor add',
+    type: ProductorDto,
   })
   public async post(
     @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
