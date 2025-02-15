@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { MovieService } from '../../services/movie/movie.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -51,8 +53,18 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie by id',
   })
-  public async get(@Param('id') id: number): Promise<MovieDto[]> {
-    return await this._movieService.getById(id);
+  public async get(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<MovieDto[]> {
+    const result = await this._movieService.getById(id);
+    if (!result) {
+      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+    }
+    return result;
   }
 
   @Get('filter-by-date')
@@ -80,7 +92,9 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie add',
   })
-  public async addMovie(@Body() data: { movieDto: MovieDto }) {
+  public async addMovie(
+    @Body(new ValidationPipe()) data: { movieDto: MovieDto },
+  ) {
     const { movieDto } = data;
     return await this._movieService.post(movieDto);
   }
@@ -93,8 +107,17 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'A movie delete by id',
   })
-  public async removeId(@Param('id') id: number): Promise<void> {
-    await this._movieService.removeId(id);
+  public async removeId(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const result = await this._movieService.removeId(id);
+    if (!result) {
+      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+    }
   }
 }
 
