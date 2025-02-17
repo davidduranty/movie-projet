@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductorController } from './productor.controller';
 import { MovieService } from '../../services/movie/movie.service';
 
-describe('AppController', () => {
+describe('ProductorController', () => {
   let appController: ProductorController;
 
   beforeEach(async () => {

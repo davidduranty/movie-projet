@@ -7,10 +7,10 @@ import {
   LoadStrategy,
   QueryOrder,
 } from '@mikro-orm/core';
-import { Actor } from 'backend/src/entities/actor.entity';
-import { ActorDto } from 'backend/src/models/actor.dto';
-import { ProductorDto } from 'backend/src/models/productor.dto';
-import { Productor } from 'backend/src/entities/productor.entity';
+import { Actor } from '../../entities/actor.entity';
+import { ActorDto } from '../../models/actor.dto';
+import { ProductorDto } from '../../models/productor.dto';
+import { Productor } from '../../entities/productor.entity';
 
 @Injectable()
 class ActorService {

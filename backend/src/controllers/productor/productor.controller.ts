@@ -9,10 +9,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Productor } from 'backend/src/entities/productor.entity';
-import { ProductorDto } from 'backend/src/models/productor.dto';
-import { ProductorService } from 'backend/src/services/productor/productor.service';
-import { HttpStatus } from 'backend/src/utils/http-status';
+import { ProductorDto } from '../../models/productor.dto';
+import { ProductorService } from '../../services/productor/productor.service';
+import { HttpStatus } from '../../utils/http-status';
 
 @Controller('productors')
 class ProductorController {

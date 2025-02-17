@@ -6,8 +6,8 @@ import {
 } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Productor } from 'backend/src/entities/productor.entity';
-import { ProductorDto } from 'backend/src/models/productor.dto';
+import { Productor } from '../../entities/productor.entity';
+import { ProductorDto } from '../../models/productor.dto';
 
 @Injectable()
 class ProductorService {

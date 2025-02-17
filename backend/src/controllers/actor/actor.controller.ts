@@ -11,10 +11,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Actor } from 'backend/src/entities/actor.entity';
-import { ActorDto } from 'backend/src/models/actor.dto';
-import { ProductorDto } from 'backend/src/models/productor.dto';
-import { ActorService } from 'backend/src/services/actor/actor.service';
+import { Actor } from '../../entities/actor.entity';
+import { ActorDto } from '../../models/actor.dto';
+import { ProductorDto } from '../../models/productor.dto';
+import { ActorService } from '../../services/actor/actor.service';
 
 @Controller('actors')
 class ActorController {
