@@ -8,7 +8,7 @@ import {
   FilterQuery,
 } from '@mikro-orm/core';
 import { Movie } from '../../entities/movie.entity';
-import { MovieDto } from 'backend/src/models/movie.dto';
+import { MovieDto } from '../../models/movie.dto';
 
 @Injectable()
 class MovieService {

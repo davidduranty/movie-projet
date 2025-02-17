@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActorController } from './actor.controller';
 import { MovieService } from '../../services/movie/movie.service';
 
-describe('AppController', () => {
-  let appController: ActorController;
+describe('ActorController', () => {
+  let actorController: ActorController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -11,7 +11,7 @@ describe('AppController', () => {
       providers: [MovieService],
     }).compile();
 
-    appController = app.get<ActorController>(ActorController);
+    actorController = app.get<ActorController>(ActorController);
   });
 
   // describe('root', () => {

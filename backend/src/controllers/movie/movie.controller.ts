@@ -13,8 +13,7 @@ import {
 import { MovieService } from '../../services/movie/movie.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpStatus } from '../../utils/http-status';
-import { Movie } from '../../entities/movie.entity';
-import { MovieDto } from 'backend/src/models/movie.dto';
+import { MovieDto } from '../../models/movie.dto';
 
 @Controller('movies')
 class MovieController {
