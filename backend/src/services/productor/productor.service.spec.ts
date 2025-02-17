@@ -2,14 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductorService } from './productor.service';
 import { EntityRepository } from '@mikro-orm/core';
 import { Productor } from 'backend/src/entities/productor.entity';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { ProductorDto } from 'backend/src/models/productor.dto';
 
 const mockProductorRepository = {
   find: jest.fn(),
 };
 
 describe('ProductorService', () => {
-  let service: ProductorService;
+  let productorService: ProductorService;
   let productorRepository: EntityRepository<Productor>;
+  let entitymanager: EntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,13 +25,13 @@ describe('ProductorService', () => {
       ],
     }).compile();
 
-    service = module.get<ProductorService>(ProductorService);
+    productorService = module.get<ProductorService>(ProductorService);
     productorRepository =
       module.get<EntityRepository<Productor>>(EntityRepository);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(productorService).toBeDefined();
   });
 
   describe('getAll', () => {
@@ -40,7 +43,7 @@ describe('ProductorService', () => {
       ];
       mockProductorRepository.find.mockResolvedValue(mockProductors);
       //Act
-      const result = await service.getAll();
+      const result = await productorService.getAll();
       //Assert
       expect(result).toEqual(mockProductors); // Le résultat doit être égal à mockProductors
       expect(mockProductorRepository.find).toHaveBeenCalled(); // Vérifie que la méthode 'find' a bien été appelée
@@ -54,7 +57,7 @@ describe('ProductorService', () => {
       mockProductorRepository.find.mockResolvedValue([]);
 
       // Act: appel de la méthode
-      const result = await service.getAll();
+      const result = await productorService.getAll();
 
       // Assert: vérification que le résultat est bien un tableau vide
       expect(result).toEqual([]); // L'array doit être vide
@@ -66,7 +69,9 @@ describe('ProductorService', () => {
       );
 
       // Act & Assert: vérifier que l'erreur est gérée
-      await expect(service.getAll()).rejects.toThrowError('Database error'); // On s'attend à ce que l'erreur soit lancée
+      await expect(productorService.getAll()).rejects.toThrowError(
+        'Database error',
+      ); // On s'attend à ce que l'erreur soit lancée
     });
   });
 });
