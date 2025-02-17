@@ -5,7 +5,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 
 describe('ActorService', () => {
-  let service: ActorService;
+  let actorService: ActorService;
   let actorRepository: EntityRepository<Actor>;
   let entityManager: EntityManager;
 
@@ -15,10 +15,10 @@ describe('ActorService', () => {
       providers: [ActorService],
     }).compile();
 
-    service = module.get<ActorService>(ActorService);
+    actorService = module.get<ActorService>(ActorService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(actorService).toBeDefined();
   });
 });
