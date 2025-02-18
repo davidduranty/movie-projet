@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import {
   EntityRepository,
   LoadStrategy,
@@ -9,6 +9,7 @@ import {
 } from '@mikro-orm/core';
 import { Movie } from '../../entities/movie.entity';
 import { MovieDto } from '../../models/movie.dto';
+import { HttpStatus } from '../../utils/http-status';
 
 @Injectable()
 class MovieService {
@@ -62,7 +63,9 @@ class MovieService {
         orderBy: { id: QueryOrder.ASC },
       },
     );
-
+    if (!movie || movie.length === 0) {
+      throw new HttpException(`no movies found`, HttpStatus.NOT_FOUND);
+    }
     return movie;
   }
 
