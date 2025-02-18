@@ -1,18 +1,49 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActorService } from './actor.service';
-import { Actor } from 'backend/src/entities/actor.entity';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager } from '@mikro-orm/core';
+import { Actor } from '../../entities/actor.entity';
+import { Productor } from '../../entities/productor.entity';
+import { getRepositoryToken } from '@mikro-orm/nestjs';
+
+const mockActorRepository = {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  nativeDelete: jest.fn(),
+  persistAndFlush: jest.fn(),
+};
+
+const mockActorEntities = {
+  persistAndFlush: jest.fn(),
+};
+
+const mockProductorRepository = {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  nativeDelete: jest.fn(),
+  persistAndFlush: jest.fn(),
+  // Ajoute d'autres méthodes que tu utilises dans ActorService
+};
 
 describe('ActorService', () => {
   let actorService: ActorService;
-  let actorRepository: EntityRepository<Actor>;
-  let entityManager: EntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [MikroOrmModule.forFeature([Actor])],
-      providers: [ActorService],
+      providers: [
+        ActorService,
+        {
+          provide: getRepositoryToken(Actor),
+          useValue: mockActorRepository, // Fournir le mock pour le MovieRepository
+        },
+        {
+          provide: getRepositoryToken(Productor),
+          useValue: mockProductorRepository, // Fournir le mock pour le MovieRepository
+        },
+        {
+          provide: EntityManager,
+          useValue: mockActorEntities, // Si tu n'as pas besoin de mocks spécifiques pour EntityManager
+        },
+      ],
     }).compile();
 
     actorService = module.get<ActorService>(ActorService);

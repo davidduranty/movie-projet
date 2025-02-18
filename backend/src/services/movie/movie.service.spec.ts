@@ -1,44 +1,41 @@
 import { Test, TestingModule } from '@nestjs/testing';
-
-import { MovieController } from '../../controllers/movie/movie.controller';
 import { MovieService } from './movie.service';
+import { EntityManager } from '@mikro-orm/core';
 import { Movie } from '../../entities/movie.entity';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { getRepositoryToken } from '@mikro-orm/nestjs';
 
 const mockMovieRepository = {
   find: jest.fn(),
+  nativeDelete: jest.fn(),
+  persistAndFlush: jest.fn(),
+  // Ajoute d'autres méthodes que tu utilises dans MovieService, par exemple, `save`, `remove`, etc.
 };
 
+const mockEntityManager = {
+  persistAndFlush: jest.fn(),
+};
 describe('MovieService', () => {
   let movieService: MovieService;
-  let movieRepository: EntityRepository<Movie>;
-  let entityManager: EntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [MovieController],
       providers: [
         MovieService,
         {
-          provide: EntityRepository,
-          useValue: mockMovieRepository,
+          provide: getRepositoryToken(Movie),
+          useValue: mockMovieRepository, // Fournir le mock pour le MovieRepository
         },
         {
           provide: EntityManager,
-          useValue: {
-            persistAndFlush: jest.fn(),
-            removeAndFlush: jest.fn(),
-          },
+          useValue: mockEntityManager, // Si tu n'as pas besoin de mocks spécifiques pour EntityManager
         },
       ],
     }).compile();
 
     movieService = module.get<MovieService>(MovieService);
-    movieRepository = module.get<EntityRepository<Movie>>(EntityRepository);
-    entityManager = module.get<EntityManager>(EntityManager);
   });
 
   it('should be defined', () => {
-    expect(MovieService).toBeDefined();
+    expect(movieService).toBeDefined();
   });
 });
