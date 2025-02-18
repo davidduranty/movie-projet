@@ -1,17 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActorController } from './actor.controller';
-import { MovieService } from '../../services/movie/movie.service';
+import { ActorService } from '../../services/actor/actor.service';
+
+const mockActorService = {
+  getAll: jest.fn(),
+  getById: jest.fn(),
+  getByCountry: jest.fn(),
+  getByName: jest.fn(),
+  post: jest.fn(),
+  removeId: jest.fn(),
+};
 
 describe('ActorController', () => {
   let actorController: ActorController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [ActorController],
-      providers: [MovieService],
+      providers: [
+        {
+          provide: ActorService, // Remplace le service par son mock
+          useValue: mockActorService,
+        },
+      ],
     }).compile();
 
-    actorController = app.get<ActorController>(ActorController);
+    actorController = module.get<ActorController>(ActorController);
+  });
+
+  it('should be defined', () => {
+    expect(actorController).toBeDefined();
   });
 
   // describe('root', () => {

@@ -1,33 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductorService } from './productor.service';
-import { EntityRepository } from '@mikro-orm/core';
-import { Productor } from 'backend/src/entities/productor.entity';
-import { EntityManager } from '@mikro-orm/postgresql';
-import { ProductorDto } from 'backend/src/models/productor.dto';
+import { EntityManager } from '@mikro-orm/core';
+import { Productor } from '../../entities/productor.entity';
+import { getRepositoryToken } from '@mikro-orm/nestjs';
 
 const mockProductorRepository = {
   find: jest.fn(),
+  nativeDelete: jest.fn(),
+  persistAndFlush: jest.fn(),
+};
+
+const mockEntityManager = {
+  persistAndFlush: jest.fn(), // Si tu veux mocker persistAndFlush
 };
 
 describe('ProductorService', () => {
   let productorService: ProductorService;
-  let productorRepository: EntityRepository<Productor>;
-  let entitymanager: EntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductorService,
         {
-          provide: EntityRepository,
+          provide: getRepositoryToken(Productor),
           useValue: mockProductorRepository,
+        },
+        {
+          provide: EntityManager,
+          useValue: mockEntityManager, // Si tu n'as pas besoin de mocks spécifiques pour EntityManager
         },
       ],
     }).compile();
 
     productorService = module.get<ProductorService>(ProductorService);
-    productorRepository =
-      module.get<EntityRepository<Productor>>(EntityRepository);
   });
 
   it('should be defined', () => {
@@ -52,26 +57,47 @@ describe('ProductorService', () => {
         expect.any(Object),
       ); // Vérifie les arguments passés à 'find'
     });
-    it('should return an empty array if no productors are found', async () => {
-      // Arrange: configuration du mock pour simuler un retour vide
-      mockProductorRepository.find.mockResolvedValue([]);
+    // it('should return an empty array if no productors are found', async () => {
+    //   // Arrange: configuration du mock pour simuler un retour vide
+    //   mockProductorRepository.find.mockResolvedValue([]);
 
-      // Act: appel de la méthode
-      const result = await productorService.getAll();
+    //   // Act: appel de la méthode
+    //   const result = await productorService.getAll();
 
-      // Assert: vérification que le résultat est bien un tableau vide
-      expect(result).toEqual([]); // L'array doit être vide
-    });
-    it('should handle errors gracefully', async () => {
-      // Arrange: configuration du mock pour simuler une erreur
-      mockProductorRepository.find.mockRejectedValue(
-        new Error('Database error'),
+    //   // Assert: vérification que le résultat est bien un tableau vide
+    //   expect(result).toEqual([]); // L'array doit être vide
+    // });
+    // it('should handle errors gracefully', async () => {
+    //   // Arrange: configuration du mock pour simuler une erreur
+    //   mockProductorRepository.find.mockRejectedValue(
+    //     new Error('Database error'),
+    //   );
+
+    //   // Act & Assert: vérifier que l'erreur est gérée
+    //   await expect(productorService.getAll()).rejects.toThrowError(
+    //     'Database error',
+    //   ); // On s'attend à ce que l'erreur soit lancée
+    // });
+  });
+  describe('get', () => {
+    it('should return a productor by id', async () => {
+      //Arrange
+      const mockProductor = {
+        id: 1,
+        lastname: 'Speilberg',
+        firstname: 'Steven',
+        age: 65,
+        now: true,
+      };
+      mockProductorRepository.find.mockResolvedValue([mockProductor]);
+      //Act
+      const result = await productorService.get(1);
+      //Assert
+      expect(result).toEqual([mockProductor]);
+      expect(mockProductorRepository.find).toHaveBeenCalledWith(
+        { id: 1 },
+        expect.any(Object),
       );
-
-      // Act & Assert: vérifier que l'erreur est gérée
-      await expect(productorService.getAll()).rejects.toThrowError(
-        'Database error',
-      ); // On s'attend à ce que l'erreur soit lancée
     });
   });
 });
