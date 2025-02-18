@@ -47,7 +47,7 @@ class ActorService {
       },
     );
     if (!actors || actors.length === 0) {
-      throw new HttpException(`no actors found `, HttpStatus.NOT_FOUND);
+      throw new HttpException(`no actors found`, HttpStatus.NOT_FOUND);
     }
     return actors;
   }
