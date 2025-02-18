@@ -4,6 +4,8 @@ import { EntityManager } from '@mikro-orm/core';
 import { Actor } from '../../entities/actor.entity';
 import { Productor } from '../../entities/productor.entity';
 import { getRepositoryToken } from '@mikro-orm/nestjs';
+import { HttpStatus } from '../../utils/http-status';
+import { HttpException } from '@nestjs/common';
 
 const mockActorRepository = {
   find: jest.fn(),
@@ -51,5 +53,38 @@ describe('ActorService', () => {
 
   it('should be defined', () => {
     expect(actorService).toBeDefined();
+  });
+  describe('getById', () => {
+    it('should a actor by id', async () => {
+      //Arrange
+      const mockActor = {
+        id: 1,
+        lastname: 'Hanks',
+        firstname: 'Tom',
+        country: 'USA',
+        start: '1975-02-05',
+        end: null,
+        productorId: 42,
+        movieId: 100,
+      };
+      mockActorRepository.find.mockResolvedValue([mockActor]);
+      //Act
+      const result = await actorService.getById(1);
+      //Assert
+      expect(result).toEqual([mockActor]);
+      expect(mockActorRepository.find).toHaveBeenCalledWith(
+        { id: 1 },
+        expect.any(Object),
+      );
+    });
+    it('should throw a NotFoundException if no actor is found', async () => {
+      //Arrange
+      mockActorRepository.find.mockResolvedValue([]);
+      // Act & Assert
+      await expect(actorService.getById(1)).rejects.toThrow(HttpException);
+      await expect(actorService.getById(1)).rejects.toThrow(
+        new HttpException(`no actors found`, HttpStatus.NOT_FOUND),
+      );
+    });
   });
 });

@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
   EntityManager,
   EntityRepository,
@@ -46,6 +46,9 @@ class ActorService {
         orderBy: { id: 'ASC' },
       },
     );
+    if (!actors || actors.length === 0) {
+      throw new HttpException(`no actors found `, HttpStatus.NOT_FOUND);
+    }
     return actors;
   }
   public async getByCountry(country?: string): Promise<ActorDto[]> {
