@@ -53,6 +53,50 @@ describe('ActorService', () => {
   it('should be defined', () => {
     expect(actorService).toBeDefined();
   });
+  describe('getAll', () => {
+    it('should get all actors', async () => {
+      //Arrange
+      const mockActors = [
+        {
+          id: 1,
+          lastname: 'Hanks',
+          firstname: 'Tom',
+          country: 'USA',
+          start: '1975-02-05',
+          end: null,
+          productorId: 42,
+          movieId: 100,
+        },
+        {
+          id: 2,
+          lastname: 'Doe',
+          firstname: 'John',
+          country: 'USA',
+          start: '1975-02-06',
+          end: null,
+          productorId: 43,
+          movieId: 101,
+        },
+      ];
+      mockActorRepository.find.mockResolvedValue(mockActors);
+      //Act
+      const result = await actorService.getAll();
+      //Assert
+      expect(result).toEqual(mockActors);
+      expect(mockActorRepository.find).toHaveBeenCalledWith(
+        {},
+        expect.any(Object),
+      );
+    });
+    it('should get no actors', async () => {
+      //Arrange
+      mockActorRepository.find.mockResolvedValue([]);
+      //Act && Assert
+      expect(actorService.getAll()).rejects.toThrow(
+        new HttpException(`No actors found`, HttpStatus.NOT_FOUND),
+      );
+    });
+  });
   describe('getById', () => {
     it('should a actor by id', async () => {
       //Arrange
@@ -86,6 +130,51 @@ describe('ActorService', () => {
       );
     });
   });
+
+  describe('getByCountry', () => {
+    it('should return actors from a specific country', async () => {
+      //Arrange
+      const mockActors = [
+        {
+          id: 1,
+          lastname: 'Hanks',
+          firstname: 'Tom',
+          country: 'USA',
+          start: '1975-02-05',
+          end: null,
+          productorId: 42,
+          movieId: 100,
+        },
+        {
+          id: 2,
+          lastname: 'Doe',
+          firstname: 'John',
+          country: 'USA',
+          start: '1975-02-06',
+          end: null,
+          productorId: 43,
+          movieId: 101,
+        },
+      ];
+      mockActorRepository.find.mockResolvedValue(mockActors);
+      //Act
+      const result = await actorService.getByCountry('USA');
+      //Assert
+      expect(result).toEqual(mockActors);
+      expect(mockActorRepository.find).toHaveBeenCalledWith(
+        { country: { $ilike: '%USA%' } },
+        expect.any(Object),
+      );
+    });
+    it('should throw an error if no actors are found for the country', async () => {
+      //Arrange
+      mockActorRepository.find.mockResolvedValue([]);
+      //Act && Assert
+      await expect(actorService.getByCountry('USA')).rejects.toThrow(
+        new HttpException('No actors found', HttpStatus.NOT_FOUND),
+      );
+    });
+  });
   describe('getByName', () => {
     it('should a actor by name', async () => {
       //Arrange
@@ -112,6 +201,15 @@ describe('ActorService', () => {
       );
       await expect(actorService.getByName('Doe')).rejects.toThrow(
         new HttpException(`No actors found`, HttpStatus.NOT_FOUND),
+      );
+    });
+    it('should throw an error if no lastname is provided', async () => {
+      await expect(actorService.getByName('')).rejects.toThrow(
+        new HttpException('Lastname is required', HttpStatus.BAD_REQUEST),
+      );
+
+      await expect(actorService.getByName(undefined as any)).rejects.toThrow(
+        new HttpException('Lastname is required', HttpStatus.BAD_REQUEST),
       );
     });
   });
