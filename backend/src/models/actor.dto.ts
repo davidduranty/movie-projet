@@ -11,10 +11,10 @@ class ActorDto {
   country: string;
 
   @IsOptional()
-  start?: Date;
+  start?: Date | null;
 
   @IsOptional()
-  end?: Date;
+  end?: Date | null;
 
   @IsOptional()
   @IsInt()

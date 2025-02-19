@@ -23,7 +23,6 @@ const mockProductorRepository = {
   findOne: jest.fn(),
   nativeDelete: jest.fn(),
   persistAndFlush: jest.fn(),
-  // Ajoute d'autres méthodes que tu utilises dans ActorService
 };
 
 describe('ActorService', () => {
@@ -85,6 +84,56 @@ describe('ActorService', () => {
       await expect(actorService.getById(1)).rejects.toThrow(
         new HttpException(`no actors found`, HttpStatus.NOT_FOUND),
       );
+    });
+  });
+  describe('getByName', () => {
+    it('should a actor by name', async () => {
+      //Arrange
+      const mockNameActor = {
+        id: 1,
+        lastname: 'doe',
+      };
+      mockActorRepository.find.mockResolvedValue([mockNameActor]);
+      //Act
+      const result = await actorService.getByName('Doe');
+      //Assert
+      expect(result).toEqual([mockNameActor]);
+      expect(mockActorRepository.find).toHaveBeenCalledWith(
+        { lastname: { $ilike: '%Doe%' } },
+        expect.any(Object),
+      );
+    });
+    it('should throw a NotFoundException if no lastname is found ', async () => {
+      //Arrange
+      mockActorRepository.find.mockResolvedValue([]);
+      //Act && Assert
+      await expect(actorService.getByName('Doe')).rejects.toThrow(
+        HttpException,
+      );
+      await expect(actorService.getByName('Doe')).rejects.toThrow(
+        new HttpException(`No actors found`, HttpStatus.NOT_FOUND),
+      );
+    });
+  });
+  describe('removeId', () => {
+    it('should remove a actor if actor found', async () => {
+      //Arrange
+      mockActorRepository.nativeDelete.mockResolvedValue(1);
+      //Act
+      const result = await actorService.removeId(1);
+      //Assert
+      expect(result).toBe(true);
+      expect(mockActorRepository.nativeDelete).toHaveBeenCalledWith({ id: 1 });
+    });
+    it('should not remove a actor if not actor found', async () => {
+      //Arrange
+
+      mockActorRepository.nativeDelete.mockResolvedValue(0);
+      //Act
+      const result = await actorService.removeId(1);
+      //Assert
+      expect(result).toBe(false);
+      expect(mockActorRepository.nativeDelete).toHaveBeenCalledWith({ id: 1 });
     });
   });
 });

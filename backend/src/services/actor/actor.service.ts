@@ -54,7 +54,7 @@ class ActorService {
   public async getByCountry(country?: string): Promise<ActorDto[]> {
     const filters: FilterQuery<Actor> = {};
 
-    if (country) {
+    if (country && country.length > 0) {
       filters['country'] = { $ilike: `%${country}%` };
     }
 
@@ -66,6 +66,9 @@ class ActorService {
       offset: 0,
       orderBy: { id: 'ASC' },
     });
+    if (!actors || actors.length === 0) {
+      throw new HttpException('No actors found', HttpStatus.NOT_FOUND);
+    }
 
     // Appliquer le filtre en mémoire si un pays est fourni
     // if (country) {
@@ -76,10 +79,11 @@ class ActorService {
   }
 
   public async getByName(lastname: string): Promise<ActorDto[]> {
-    let filterName: any = {};
-    if (lastname) {
-      filterName.lastname = { $ilike: lastname };
+    if (!lastname) {
+      throw new HttpException('Lastname is required', HttpStatus.BAD_REQUEST);
     }
+
+    const filterName = { lastname: { $ilike: `%${lastname}%` } };
     const actors = await this._actorService.find(filterName, {
       populate: ['productor', 'dataMovies'],
       populateOrderBy: { productor: { id: QueryOrder.ASC } },
@@ -88,67 +92,76 @@ class ActorService {
       offset: 0,
       orderBy: { id: 'ASC' },
     });
+
+    if (!actors || actors.length === 0) {
+      throw new HttpException('No actors found', HttpStatus.NOT_FOUND);
+    }
     return actors;
   }
 
-  public async post(
-    actorDto: ActorDto,
-    productorDto: ProductorDto,
-  ): Promise<ActorDto> {
+  // public async post(
+  //   actorDto: ActorDto,
+  //   productorDto: ProductorDto,
+  // ): Promise<ActorDto> {
+  //   const addActor = new Actor();
+  //   addActor.lastname = actorDto.lastname;
+  //   addActor.firstname = actorDto.firstname;
+  //   addActor.country = actorDto.country;
+
+  //   actorDto.start = actorDto.start;
+  //   actorDto.end = actorDto.end;
+
+  //   if (actorDto.productorId) {
+  //     const productor = await this._productorService.findOne(
+  //       actorDto.productorId,
+  //     );
+  //     if (!productor) {
+  //       throw new Error('Productor not found');
+  //     }
+  //     addActor.productor = productor;
+  //   } else {
+  //     const existingProductor = await this._productorService.findOne({
+  //       lastname: productorDto.lastname,
+  //       firstname: productorDto.firstname,
+  //     });
+
+  //     if (existingProductor) {
+  //       addActor.productor = existingProductor;
+  //     } else {
+  //       const newProductor = new Productor();
+  //       newProductor.lastname = productorDto.lastname;
+  //       newProductor.firstname = productorDto.firstname;
+  //       if (productorDto.age !== undefined) {
+  //         newProductor.age = productorDto.age;
+  //       }
+  //       newProductor.now = newProductor.now ? true : false;
+
+  //       await this._em.persistAndFlush(newProductor);
+
+  //       addActor.productor = newProductor;
+  //     }
+  //   }
+
+  //   this._em.persistAndFlush(addActor);
+
+  //   return addActor;
+  // }
+
+  public async post(actorDto: ActorDto): Promise<ActorDto> {
     const addActor = new Actor();
     addActor.lastname = actorDto.lastname;
     addActor.firstname = actorDto.firstname;
     addActor.country = actorDto.country;
-
-    actorDto.start = actorDto.start;
-    actorDto.end = actorDto.end;
-
-    if (actorDto.productorId) {
-      const productor = await this._productorService.findOne(
-        actorDto.productorId,
-      );
-      if (!productor) {
-        throw new Error('Productor not found');
-      }
-      addActor.productor = productor;
-    } else {
-      const existingProductor = await this._productorService.findOne({
-        lastname: productorDto.lastname,
-        firstname: productorDto.firstname,
-      });
-
-      if (existingProductor) {
-        addActor.productor = existingProductor;
-      } else {
-        const newProductor = new Productor();
-        newProductor.lastname = productorDto.lastname;
-        newProductor.firstname = productorDto.firstname;
-        if (productorDto.age !== undefined) {
-          newProductor.age = productorDto.age;
-        }
-        newProductor.now = newProductor.now ? true : false;
-
-        await this._em.persistAndFlush(newProductor);
-
-        addActor.productor = newProductor;
-      }
-    }
-
-    this._em.persistAndFlush(addActor);
+    addActor.start = actorDto.start ?? null;
+    addActor.end = actorDto.end ?? null;
+    await this._em.persistAndFlush(addActor);
 
     return addActor;
   }
 
   public async removeId(id: number): Promise<boolean> {
     const actor = await this._actorService.nativeDelete({ id });
-    if (!actor) {
-      return false;
-    }
-    await this._actorService.nativeDelete(actor);
-    return true;
-
-    // const remainingActors = await this._actorService.findAll();
-    // return remainingActors;
+    return actor > 0;
   }
 }
 
