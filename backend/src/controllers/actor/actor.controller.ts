@@ -67,11 +67,10 @@ class ActorController {
     @Body(new ValidationPipe())
     data: {
       actorDto: ActorDto;
-      productorDto: ProductorDto;
     },
   ) {
-    const { actorDto, productorDto } = data;
-    return await this._actorService.post(actorDto, productorDto);
+    const { actorDto } = data;
+    return await this._actorService.post(actorDto);
   }
   @Get('country')
   @ApiOperation({
