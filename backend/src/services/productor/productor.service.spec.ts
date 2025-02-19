@@ -100,4 +100,17 @@ describe('ProductorService', () => {
       );
     });
   });
+  describe('removeProductore', () => {
+    it('should remove a productor by id', async () => {
+      //Arrange
+      mockProductorRepository.nativeDelete.mockResolvedValue(1);
+      //Act
+      const result = await productorService.removeProductore(1);
+      //Assert
+      expect(result).toBe(true);
+      expect(mockProductorRepository.nativeDelete).toHaveBeenCalledWith({
+        id: 1,
+      });
+    });
+  });
 });
