@@ -19,7 +19,7 @@ describe('ActorController', () => {
       controllers: [ActorController],
       providers: [
         {
-          provide: ActorService, // Remplace le service par son mock
+          provide: ActorService, 
           useValue: mockActorService,
         },
       ],

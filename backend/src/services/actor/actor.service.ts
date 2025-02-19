@@ -9,7 +9,6 @@ import {
 } from '@mikro-orm/core';
 import { Actor } from '../../entities/actor.entity';
 import { ActorDto } from '../../models/actor.dto';
-import { ProductorDto } from '../../models/productor.dto';
 import { Productor } from '../../entities/productor.entity';
 
 @Injectable()
@@ -31,6 +30,9 @@ class ActorService {
         strategy: LoadStrategy.SELECT_IN,
       },
     );
+    if (!actors || actors.length === 0) {
+      throw new HttpException('No actors found', HttpStatus.NOT_FOUND);
+    }
     return actors;
   }
 
