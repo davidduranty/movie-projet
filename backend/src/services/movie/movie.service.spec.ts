@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { HttpException } from '@nestjs/common';
 import { HttpStatus } from '../../utils/http-status';
 
+
 const mockMovieRepository = {
   find: jest.fn(),
   nativeDelete: jest.fn(),
@@ -87,14 +88,34 @@ describe('MovieService', () => {
       );
     });
   });
+  describe('getByName', () => {
+    it('should a movie by the lastname', async () => {
+      //Arrange
+      const mockTitleMovie = {
+        id: 1,
+        title: 'Scream'
+      }
+      mockMovieRepository.find.mockResolvedValue([mockTitleMovie])
+      //Act
+      const result = await movieService.getByName('Scream');
+      //Assert
+      expect(result).toEqual([mockTitleMovie]);
+      expect(mockMovieRepository.find).toHaveBeenCalledWith({
+        title: { $ilike: '%Scream%' }
+
+      },
+        expect.any(Object))
+    })
+  })
   describe('getMoviesByDateRange', () => {
     it('should get a movie without date', async () => {
       //Arrange
       const mockMovie = {
-        id: 1,
         title: 'Scream',
-        date: '2000-02-02',
+        date: new Date('2000-02-02'),
         genre: 'Horreur',
+        actor: [], // Assurez-vous que ces relations sont bien gérées
+        productor: []
       };
       mockMovieRepository.find.mockResolvedValue([mockMovie]);
       //Act
@@ -102,25 +123,25 @@ describe('MovieService', () => {
       //Assert
       expect(result).toEqual([mockMovie]);
       expect(mockMovieRepository.find).toHaveBeenCalledWith(
-        {}, // On teste la version où aucun filtre n'est appliqué
-        {
-          strategy: LoadStrategy.SELECT_IN,
+        expect.objectContaining({}),
+        expect.objectContaining({
+          strategy: "select-in",
           limit: 10,
           offset: 0,
-          orderBy: { id: QueryOrder.ASC },
-        },
+          orderBy: { id: "ASC" },
+          populate: expect.arrayContaining(["actor"]),
+        })
       );
     });
-    it('should get a movie by date start range', async () => {
+    it('should get a movie by date range', async () => {
       //Arrange
       const mockMovie = {
-        id: 1,
         title: 'Scream',
-        date: '2000-02-02',
+        date: new Date('2000-02-02'),
         genre: 'Horreur',
       };
       const startDate = new Date('2000-01-01');
-      const endDate = new Date('2001-01-01');
+      const endDate = new Date('2025-01-01');
       mockMovieRepository.find.mockResolvedValue([mockMovie]);
       //Act
       const result = await movieService.getMoviesByDateRange(
@@ -130,13 +151,94 @@ describe('MovieService', () => {
       //Assert
       expect(result).toEqual([mockMovie]);
       expect(mockMovieRepository.find).toHaveBeenCalledWith(
-        { date: { $gte: startDate, $lte: endDate } },
-        {
-          strategy: LoadStrategy.SELECT_IN,
+        expect.objectContaining({
+          date: { $gte: startDate, $lte: endDate }
+        }),
+        expect.objectContaining({
+          strategy: "select-in",
           limit: 10,
           offset: 0,
-          orderBy: { id: QueryOrder.ASC },
-        },
+          orderBy: { id: "ASC" },
+          populate: expect.arrayContaining(["actor"]),
+        })
+      );
+    });
+    it('should get a movie with only date start', async () => {
+      //Arrange
+      const mockMovie = {
+        title: 'Scream',
+        date: new Date('2000-02-02'),
+        genre: 'Horreur',
+      };
+      const startDate = new Date('2000-01-01');
+      mockMovieRepository.find.mockResolvedValue([mockMovie]);
+      //Act
+      const result = await movieService.getMoviesByDateRange(startDate);
+      //Assert
+      expect(result).toEqual([mockMovie]);
+      expect(mockMovieRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          date: expect.objectContaining({
+            $gte: startDate,
+          }),
+        }),
+        expect.objectContaining({
+          strategy: "select-in",
+          limit: 10,
+          offset: 0,
+          orderBy: { id: "ASC" },
+          populate: expect.arrayContaining(["actor"]),
+        })
+      );
+    });
+    it('should get a movie with only date end', async () => {
+      //Arrange
+      const mockMovie = {
+        title: 'Scream',
+        date: new Date('2000-02-02'),
+        genre: 'Horreur',
+      };
+
+      const endDate = new Date('2002-01-01');
+      mockMovieRepository.find.mockResolvedValue([mockMovie]);
+      //Act
+      const result = await movieService.getMoviesByDateRange(undefined, endDate);
+      //Assert
+      expect(result).toEqual([mockMovie]);
+      expect(mockMovieRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          date: expect.objectContaining({
+            $lte: endDate,
+          }),
+        }),
+        expect.objectContaining({
+          strategy: "select-in",
+          limit: 10,
+          offset: 0,
+          orderBy: { id: "ASC" },
+          populate: expect.arrayContaining(["actor"]),
+        })
+      );
+    });
+    it('should no movies found', async () => {
+      //Arrange
+      mockMovieRepository.find.mockResolvedValue([]);
+      //Act
+      const result = await movieService.getMoviesByDateRange();
+      //Assert
+      expect(result).toEqual([]);
+      expect(mockMovieRepository.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          date: expect.objectContaining(
+            {}),
+        }),
+        expect.objectContaining({
+          strategy: "select-in",
+          limit: 10,
+          offset: 0,
+          orderBy: { id: "ASC" },
+          populate: expect.arrayContaining(["actor"]),
+        })
       );
     });
   });
@@ -151,5 +253,14 @@ describe('MovieService', () => {
       expect(result).toBe(true);
       expect(mockMovieRepository.nativeDelete).toHaveBeenCalledWith({ id: 1 });
     });
+    it('should no found a movie for delete', async () => {
+      //Arrange
+      mockMovieRepository.nativeDelete.mockResolvedValue(0);
+      //Act
+      const result = await movieService.removeId(0);
+      //Assert
+      expect(result).toBe(false);
+      expect(mockMovieRepository.nativeDelete).toHaveBeenCalledWith({ id: 0 });
+    })
   });
 });

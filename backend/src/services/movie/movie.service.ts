@@ -17,7 +17,7 @@ class MovieService {
     @InjectRepository(Movie)
     private readonly _movieService: EntityRepository<Movie>,
     private readonly _em: EntityManager,
-  ) {}
+  ) { }
 
   public async getAll(): Promise<MovieDto[]> {
     // const dateFilter = {};
@@ -76,17 +76,22 @@ class MovieService {
     const dateRange: FilterQuery<Movie> = {};
 
     if (start && end) {
+      dateRange.date = {};
       dateRange.date = { $gte: start, $lte: end };
     } else if (start) {
       dateRange.date = { $gte: start };
     } else if (end) {
       dateRange.date = { $lte: end };
     }
+
+
     const movies = await this._movieService.find(dateRange, {
       strategy: LoadStrategy.SELECT_IN,
       limit: 10,
       offset: 0,
       orderBy: { id: QueryOrder.ASC },
+      populate: ['actor'],
+      populateOrderBy: { actor: { id: QueryOrder.ASC } },
     });
     return movies;
   }
@@ -102,11 +107,7 @@ class MovieService {
 
   public async removeId(id: number): Promise<boolean> {
     const movie = await this._movieService.nativeDelete({ id });
-    if (!movie) {
-      return false;
-    }
-    await this._movieService.nativeDelete(movie);
-    return true;
+    return movie > 0
   }
   // private getDateFilter(date: Date | null): object {
   //   return date
