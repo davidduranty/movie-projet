@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { HttpException } from '@nestjs/common';
 import { HttpStatus } from '../../utils/http-status';
 
+
 const mockMovieRepository = {
   find: jest.fn(),
   nativeDelete: jest.fn(),
@@ -87,6 +88,25 @@ describe('MovieService', () => {
       );
     });
   });
+  describe('getByName', () => {
+    it('should a movie by the lastname', async () => {
+      //Arrange
+      const mockTitleMovie = {
+        id: 1,
+        title: 'Scream'
+      }
+      mockMovieRepository.find.mockResolvedValue([mockTitleMovie])
+      //Act
+      const result = await movieService.getByName('Scream');
+      //Assert
+      expect(result).toEqual([mockTitleMovie]);
+      expect(mockMovieRepository.find).toHaveBeenCalledWith({
+        title: { $ilike: '%Scream%' }
+
+      },
+        expect.any(Object))
+    })
+  })
   describe('getMoviesByDateRange', () => {
     it('should get a movie without date', async () => {
       //Arrange
