@@ -107,11 +107,7 @@ class MovieService {
 
   public async removeId(id: number): Promise<boolean> {
     const movie = await this._movieService.nativeDelete({ id });
-    if (!movie) {
-      return false;
-    }
-    await this._movieService.nativeDelete(movie);
-    return true;
+    return movie > 0
   }
   // private getDateFilter(date: Date | null): object {
   //   return date

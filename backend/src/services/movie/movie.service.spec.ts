@@ -253,5 +253,14 @@ describe('MovieService', () => {
       expect(result).toBe(true);
       expect(mockMovieRepository.nativeDelete).toHaveBeenCalledWith({ id: 1 });
     });
+    it('should no found a movie for delete', async () => {
+      //Arrange
+      mockMovieRepository.nativeDelete.mockResolvedValue(0);
+      //Act
+      const result = await movieService.removeId(0);
+      //Assert
+      expect(result).toBe(false);
+      expect(mockMovieRepository.nativeDelete).toHaveBeenCalledWith({ id: 0 });
+    })
   });
 });
