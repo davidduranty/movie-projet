@@ -7,11 +7,10 @@ import { getRepositoryToken } from '@mikro-orm/nestjs';
 const mockProductorRepository = {
   find: jest.fn(),
   nativeDelete: jest.fn(),
-  persistAndFlush: jest.fn(),
 };
 
 const mockEntityManager = {
-  persistAndFlush: jest.fn(), // Si tu veux mocker persistAndFlush
+  persistAndFlush: jest.fn().mockResolvedValue(undefined),
 };
 
 describe('ProductorService', () => {
@@ -27,7 +26,7 @@ describe('ProductorService', () => {
         },
         {
           provide: EntityManager,
-          useValue: mockEntityManager, // Si tu n'as pas besoin de mocks spécifiques pour EntityManager
+          useValue: mockEntityManager,
         },
       ],
     }).compile();
@@ -43,8 +42,8 @@ describe('ProductorService', () => {
     it('should a array of ProductorDto', async () => {
       //Arrange
       const mockProductors = [
-        { id: 1, Lastname: 'Duranty', firstname: 'David', age: 49, now: true },
-        { id: 1, Lastname: 'Durant', firstname: 'Davis', age: 19, now: false },
+        { id: 1, lastname: 'Duranty', firstname: 'David', age: 49, now: true },
+        { id: 1, lastname: 'Durant', firstname: 'Davis', age: 19, now: false },
       ];
       mockProductorRepository.find.mockResolvedValue(mockProductors);
       //Act
@@ -113,4 +112,38 @@ describe('ProductorService', () => {
       });
     });
   });
+  // describe('post', () => {
+  //   it('should create a productor', async () => {
+  //     // Arrange
+  //     const mockProductorDto: ProductorDto = {
+  //       lastname: 'Doe',
+  //       firstname: 'John',
+  //       age: 34,
+  //       now: true,
+  //     };
+
+  //     const mockProductor = new Productor();
+  //     Object.assign(mockProductor, mockProductorDto, { id: 1 });
+
+  //     jest
+  //       .spyOn(mockEntityManager, 'persistAndFlush')
+  //       .mockReturnValue(undefined);
+
+  //     // Act
+  //     const result = await productorService.post(mockProductorDto);
+
+  //     // Assert
+  //     expect(mockEntityManager.persistAndFlush).toBeCalled();
+  //     expect(mockEntityManager.persistAndFlush).toBeCalledWith(
+  //       expect.any(Productor),
+  //     );
+  //     expect(result).toEqual({
+  //       id: 1,
+  //       lastname: 'Doe',
+  //       firstname: 'John',
+  //       age: 34,
+  //       now: true,
+  //     });
+  //   });
+  // });
 });

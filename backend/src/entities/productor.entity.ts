@@ -43,11 +43,23 @@ class Productor extends BaseEntity {
   @Property({ type: 'boolean' })
   now: boolean;
 
-  @OneToMany(() => Actor, (event) => event.productor)
+  @OneToMany(() => Actor, (event) => event.productor, { eager: false })
   actors = new Collection<Actor>(this);
 
-  @ManyToMany({ entity: () => Movie, mappedBy: 'productor' })
+  @ManyToMany({ entity: () => Movie, mappedBy: 'productor', eager: false })
   dataMovies = new Collection<Movie>(this);
+
+  // toJSON() {
+  //   return {
+  //     id: this.id,
+  //     lastname: this.lastname,
+  //     firstname: this.firstname,
+  //     age: this.age,
+  //     now: this.now,
+  //     actors: this.actors.getIdentifiers(), // Renvoie juste les IDs des acteurs
+  //     dataMovies: this.dataMovies.getIdentifiers(), // Renvoie juste les IDs des films
+  //   };
+  // }
 }
 
 export { Productor };

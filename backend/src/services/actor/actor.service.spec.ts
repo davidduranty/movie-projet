@@ -11,7 +11,6 @@ const mockActorRepository = {
   find: jest.fn(),
   findOne: jest.fn(),
   nativeDelete: jest.fn(),
-  persistAndFlush: jest.fn(),
 };
 
 const mockActorEntities = {
@@ -22,7 +21,6 @@ const mockProductorRepository = {
   find: jest.fn(),
   findOne: jest.fn(),
   nativeDelete: jest.fn(),
-  persistAndFlush: jest.fn(),
 };
 
 describe('ActorService', () => {

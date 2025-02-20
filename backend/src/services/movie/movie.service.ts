@@ -83,8 +83,6 @@ class MovieService {
       dateRange.date = { $lte: end };
     }
     const movies = await this._movieService.find(dateRange, {
-      // populate: [],
-      // populateOrderBy: { actor: { id: QueryOrder.ASC } },
       strategy: LoadStrategy.SELECT_IN,
       limit: 10,
       offset: 0,
