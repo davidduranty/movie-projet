@@ -19,7 +19,7 @@ class ActorService {
     @InjectRepository(Productor)
     private readonly _productorService: EntityRepository<Productor>,
     private readonly _em: EntityManager,
-  ) {}
+  ) { }
 
   public async getAll(): Promise<Actor[]> {
     const actors = await this._actorService.find(
@@ -36,22 +36,19 @@ class ActorService {
     return actors;
   }
 
-  public async getById(id: number): Promise<ActorDto[]> {
+  public async getById(id: number): Promise<Actor> {
     const actors = await this._actorService.find(
       { id: id },
       {
         populate: ['productor', 'dataMovies'],
         populateOrderBy: { productor: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
-        limit: 10,
-        offset: 0,
-        orderBy: { id: 'ASC' },
       },
     );
     if (!actors || actors.length === 0) {
       throw new HttpException(`no actors found`, HttpStatus.NOT_FOUND);
     }
-    return actors;
+    return actors[0];
   }
   public async getByCountry(country?: string): Promise<ActorDto[]> {
     const filters: FilterQuery<Actor> = {};

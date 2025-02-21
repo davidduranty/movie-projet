@@ -112,7 +112,7 @@ describe('ActorService', () => {
       //Act
       const result = await actorService.getById(1);
       //Assert
-      expect(result).toEqual([mockActor]);
+      expect(result).toEqual(mockActor);
       expect(mockActorRepository.find).toHaveBeenCalledWith(
         { id: 1 },
         expect.any(Object),

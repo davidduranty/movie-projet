@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -13,12 +14,11 @@ import {
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Actor } from '../../entities/actor.entity';
 import { ActorDto } from '../../models/actor.dto';
-import { ProductorDto } from '../../models/productor.dto';
 import { ActorService } from '../../services/actor/actor.service';
 
 @Controller('actors')
 class ActorController {
-  constructor(private readonly _actorService: ActorService) {}
+  constructor(private readonly _actorService: ActorService) { }
 
   @Get('all')
   @ApiOperation({
@@ -46,10 +46,10 @@ class ActorController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ): Promise<ActorDto[]> {
+  ): Promise<ActorDto> {
     const result = await this._actorService.getById(id);
     if (!result) {
-      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`);
+      throw new NotFoundException(`Actor ${HttpStatus.NOT_FOUND}`);
     }
     return result;
   }
@@ -74,7 +74,7 @@ class ActorController {
   }
   @Get('country')
   @ApiOperation({
-    summary: 'Search a actor vy country',
+    summary: 'Search a actor with country',
   })
   @ApiResponse({
     status: HttpStatus.OK,
