@@ -118,6 +118,34 @@ describe('ActorController', () => {
       expect(result).toEqual([]);
       expect(actorService.getByCountry).toHaveBeenCalledWith('USA')
     })
+    describe('getName', () => {
+      it('should Get a actor by name', async () => {
+        //Arrange
+        const mockActorName = {
+          id: 1,
+          lastname: 'Hanks',
+          firstname: 'Tom',
+          country: 'USA',
+          start: '1975-02-05',
+          end: null,
+          productorId: 42,
+          movieId: 100,
+        }
+        mockActorService.getByName.mockResolvedValue(mockActorName);
+        //Act
+        const result = await actorController.getName('Hanks');
+        //Assert
+        expect(result).toEqual(mockActorName);
+        expect(actorService.getByName).toHaveBeenCalledWith('Hanks');
+      })
+      it('should actor not found', async () => {
+        //Arrange
+        mockActorService.getByName.mockResolvedValue(undefined);
+        //Act && Assert
+        await expect(actorController.getName('Hanks')).rejects.toThrow(Error);
+        expect(actorService.getByName).toHaveBeenCalledWith('Hanks');
+      })
+    })
     describe('removeId', () => {
       it('should Delete a actor by id', async () => {
         //Arrange
