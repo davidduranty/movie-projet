@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActorController } from './actor.controller';
 import { ActorService } from '../../services/actor/actor.service';
 import { NotFoundException } from '@nestjs/common';
+import { ActorDto } from '../../models/actor.dto';
 
 const mockActorService = {
   getAll: jest.fn(),
@@ -146,6 +147,26 @@ describe('ActorController', () => {
         expect(actorService.getByName).toHaveBeenCalledWith('Hanks');
       })
     })
+    describe('post', () => {
+      it('should Add a new actor', async () => {
+        //Arrange
+        const mockAddActor: ActorDto = {
+          lastname: 'Doe',
+          firstname: 'John',
+          country: 'USA',
+          start: new Date('1985-01-01'),
+          end: null,
+          productorId: 42,
+          movieId: 100,
+        };
+        mockActorService.post.mockResolvedValue(mockAddActor);
+        //Act
+        const result = await actorController.create({ actorDto: mockAddActor })
+        //Assert
+        expect(result).toEqual(mockAddActor);
+        expect(actorService.post).toHaveBeenCalledWith(mockAddActor)
+      })
+    })
     describe('removeId', () => {
       it('should Delete a actor by id', async () => {
         //Arrange
@@ -161,7 +182,7 @@ describe('ActorController', () => {
         //Arrange
         mockActorService.removeId.mockResolvedValue(null)
         //Act && Assert
-        await expect(actorController.removeId).rejects.toThrow(Error);
+        await expect(actorController.removeId(1)).rejects.toThrow(Error);
         expect(mockActorService.removeId).toHaveBeenCalledWith(1);
       })
     })
