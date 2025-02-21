@@ -33,6 +33,14 @@ describe('MovieController', () => {
   it('should be defined', () => {
     expect(movieController).toBeDefined();
   });
+  describe('healthCheck', () => {
+    it('should Ready if server is ready', async () => {
+      //Act
+      const result = movieController.healthCheck();
+      //Assert
+      expect(result).toBe('ready')
+    })
+  })
   describe('getAllMovies', () => {
     it('should Getting all Movies', async () => {
       //Arrange
