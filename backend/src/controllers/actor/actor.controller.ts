@@ -94,8 +94,12 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor by name',
   })
-  public async getName(@Query('name') name: string): Promise<ActorDto[]> {
-    return await this._actorService.getByName(name);
+  public async getName(@Query('lastname') lastname: string): Promise<ActorDto[]> {
+    const result = await this._actorService.getByName(lastname);
+    if (!result) {
+      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`)
+    }
+    return result
   }
 
   @Delete(':id')
