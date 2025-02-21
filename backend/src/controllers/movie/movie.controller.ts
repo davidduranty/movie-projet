@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -17,7 +18,7 @@ import { MovieDto } from '../../models/movie.dto';
 
 @Controller('movies')
 class MovieController {
-  constructor(private readonly _movieService: MovieService) {}
+  constructor(private readonly _movieService: MovieService) { }
 
   @Get('health-check')
   @ApiOperation({
@@ -39,10 +40,13 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'All movies',
   })
-  public async getAllMovies() // @Query('date') dateString?: string,
-  : Promise<MovieDto[]> {
-    // const date = dateString ? new Date(dateString) : null;
-    return await this._movieService.getAll();
+  public async getAllMovies()
+    : Promise<MovieDto[]> {
+    const result = await this._movieService.getAll();
+    if (!result || result.length === 0) {
+      throw new NotFoundException('No movies found');
+    }
+    return result
   }
 
   @Get('id/:id')
@@ -62,7 +66,7 @@ class MovieController {
   ): Promise<MovieDto[]> {
     const result = await this._movieService.getById(id);
     if (!result) {
-      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+      throw new NotFoundException('No movies found');
     }
     return result;
   }

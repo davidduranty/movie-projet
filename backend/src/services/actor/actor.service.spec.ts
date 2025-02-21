@@ -3,9 +3,10 @@ import { ActorService } from './actor.service';
 import { EntityManager } from '@mikro-orm/core';
 import { Actor } from '../../entities/actor.entity';
 import { Productor } from '../../entities/productor.entity';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
+import { getRepositoryToken, MikroOrmModule } from '@mikro-orm/nestjs';
 import { HttpStatus } from '../../utils/http-status';
 import { HttpException } from '@nestjs/common';
+import { ActorDto } from '../../models/actor.dto';
 
 const mockActorRepository = {
   find: jest.fn(),
@@ -28,19 +29,27 @@ describe('ActorService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      // imports: [
+      //   MikroOrmModule.forRoot({
+      //     entities: [Actor, Productor],
+      //     dbName: 'test-db',
+      //     type: 'postgresql',
+      //   }),
+      //   MikroOrmModule.forFeature([Actor, Productor]),
+      // ],
       providers: [
         ActorService,
         {
           provide: getRepositoryToken(Actor),
-          useValue: mockActorRepository, // Fournir le mock pour le MovieRepository
+          useValue: mockActorRepository,
         },
         {
           provide: getRepositoryToken(Productor),
-          useValue: mockProductorRepository, // Fournir le mock pour le MovieRepository
+          useValue: mockProductorRepository,
         },
         {
           provide: EntityManager,
-          useValue: mockActorEntities, // Si tu n'as pas besoin de mocks spécifiques pour EntityManager
+          useValue: mockActorEntities,
         },
       ],
     }).compile();
@@ -232,4 +241,37 @@ describe('ActorService', () => {
       expect(mockActorRepository.nativeDelete).toHaveBeenCalledWith({ id: 1 });
     });
   });
+  // describe('post', () => {
+  //   it('devrait ajouter un nouvel acteur', async () => {
+  //     // Arrange
+  //     const mockAddActor: Actor = {
+  //       id: 1,
+  //       lastname: 'Doe',
+  //       firstname: 'John',
+  //       country: 'USA',
+  //       start: new Date('1985-01-01'),
+  //       end: null,
+  //       productorId: 42,
+  //       movieId: 100,
+  //       dataMovies: []
+  //     } as unknown as Actor;
+
+  //     (mockActorEntities.persistAndFlush as jest.Mock).mockResolvedValue(mockAddActor);
+
+  //     // Act
+  //     const result = await actorService.post({
+  //       lastname: 'Doe',
+  //       firstname: 'John',
+  //       country: 'USA',
+  //       start: new Date('1985-01-01'),
+  //       end: null,
+  //       productorId: 42,
+  //       movieId: 100,
+  //     } as unknown as ActorDto);
+
+  //     // Assert
+  //     expect(result).toEqual(mockAddActor);
+  //     expect(mockActorEntities.persistAndFlush).toHaveBeenCalledWith(expect.any(Actor));
+  //   });
+  // });
 });
