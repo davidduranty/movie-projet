@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MovieController } from './movie.controller';
 import { MovieService } from '../../services/movie/movie.service';
 import { NotFoundException } from '@nestjs/common';
+import { MovieDto } from '../../models/movie.dto';
 
 const mockMovieService = {
   getAll: jest.fn(),
@@ -76,6 +77,33 @@ describe('MovieController', () => {
       //Assert
       await expect(movieController.get(0)).rejects.toThrow(NotFoundException);
       expect(mockMovieService.getById).toHaveBeenCalledWith(0)
+    })
+  })
+  describe('addMovie', () => {
+    it('should A movie add', async () => {
+      //Arrange
+      const mockAddMovie: MovieDto = {
+        title: 'Scream',
+        date: new Date('2010-02-06'),
+        genre: 'Horreur'
+      }
+      mockMovieService.post.mockReturnValue(mockAddMovie)
+      //Act
+      const result = await movieController.addMovie({ movieDto: mockAddMovie })
+      //Assert
+      expect(result).toEqual(mockAddMovie);
+      expect(mockMovieService.post).toHaveBeenCalledWith(mockAddMovie)
+    })
+  })
+  describe('removeId', () => {
+    it('should Delete a movie by id', async () => {
+      //Arrange
+      mockMovieService.removeId.mockReturnValue(true);
+      //Act
+      const result = await movieController.removeId(1);
+      //Assert
+      expect(result).toBeUndefined();
+      expect(mockMovieService.removeId).toHaveBeenCalledWith(1);
     })
   })
 
