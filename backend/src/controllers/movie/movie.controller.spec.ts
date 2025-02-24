@@ -81,8 +81,7 @@ describe('MovieController', () => {
     it('should get a movie by id not found', async () => {
       //Arrange
       mockMovieService.getById.mockReturnValue(0);
-      //Act
-      //Assert
+      //Act && Assert
       await expect(movieController.get(0)).rejects.toThrow(NotFoundException);
       expect(mockMovieService.getById).toHaveBeenCalledWith(0)
     })
@@ -223,6 +222,13 @@ describe('MovieController', () => {
       //Assert
       expect(result).toBeUndefined();
       expect(mockMovieService.removeId).toHaveBeenCalledWith(1);
+    })
+    it('should no movie found for delete', async () => {
+      //Arrange
+      mockMovieService.removeId.mockReturnValue(0)
+      //Act && Assert
+      await expect(movieController.removeId(0)).rejects.toThrow(Error);
+      expect(mockMovieService.removeId).toHaveBeenCalledWith(0)
     })
   })
 
