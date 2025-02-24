@@ -114,7 +114,7 @@ describe('MovieService', () => {
         title: 'Scream',
         date: new Date('2000-02-02'),
         genre: 'Horreur',
-        actor: [], // Assurez-vous que ces relations sont bien gérées
+        actor: [],
         productor: []
       };
       mockMovieRepository.find.mockResolvedValue([mockMovie]);
