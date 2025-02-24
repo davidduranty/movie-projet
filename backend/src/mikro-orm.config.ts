@@ -1,12 +1,16 @@
 import { Logger } from '@nestjs/common';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
+import { Actor } from './entities/actor.entity';
+import { Movie } from './entities/movie.entity';
+import { Productor } from './entities/productor.entity';
 
 const logger = new Logger('mikroORM')
 
 const config = {
     ensureDatabase: true,
     autoLoadEntities: true,
+    entities: [Actor, Movie, Productor],
     driver: PostgreSqlDriver,
     dbName: 'postgres', // Nom de ta base de données
     host: 'localhost',
@@ -18,4 +22,4 @@ const config = {
     logger: logger.log.bind(logger),
 }
 
-export {config}
+export { config }

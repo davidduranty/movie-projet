@@ -222,13 +222,13 @@
         },
         "end": {
           "name": "end",
-          "type": "timestamptz",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
+          "length": 255,
+          "mappedType": "string"
         },
         "lastname": {
           "name": "lastname",
@@ -266,7 +266,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "integer"
         }
       },
@@ -296,6 +296,7 @@
             "id"
           ],
           "referencedTableName": "movie.productor",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       },

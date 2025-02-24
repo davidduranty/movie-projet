@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -13,12 +14,11 @@ import {
 import { MovieService } from '../../services/movie/movie.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { HttpStatus } from '../../utils/http-status';
-import { Movie } from '../../entities/movie.entity';
-import { MovieDto } from 'backend/src/models/movie.dto';
+import { MovieDto } from '../../models/movie.dto';
 
 @Controller('movies')
 class MovieController {
-  constructor(private readonly _movieService: MovieService) {}
+  constructor(private readonly _movieService: MovieService) { }
 
   @Get('health-check')
   @ApiOperation({
@@ -40,10 +40,13 @@ class MovieController {
     status: HttpStatus.OK,
     description: 'All movies',
   })
-  public async getAllMovies() // @Query('date') dateString?: string,
-  : Promise<MovieDto[]> {
-    // const date = dateString ? new Date(dateString) : null;
-    return await this._movieService.getAll();
+  public async getAllMovies()
+    : Promise<MovieDto[]> {
+    const result = await this._movieService.getAll();
+    if (!result || result.length === 0) {
+      throw new NotFoundException('No movies found');
+    }
+    return result
   }
 
   @Get('id/:id')
@@ -63,7 +66,7 @@ class MovieController {
   ): Promise<MovieDto[]> {
     const result = await this._movieService.getById(id);
     if (!result) {
-      throw new Error(`Movie ${HttpStatus.NOT_FOUND}`);
+      throw new NotFoundException('No movies found');
     }
     return result;
   }
@@ -74,19 +77,19 @@ class MovieController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'A movie add',
+    description: 'Movies by release date range',
   })
   public async getMoviesByDate(
-    @Query('start') start?: string,
-    @Query('end') end?: string,
+    @Query('start') start?: Date | null,
+    @Query('end') end?: Date | null,
   ): Promise<MovieDto[]> {
-    const startDate = start ? new Date(start) : new Date(0);
-    const endDate = end ? new Date(end) : new Date();
+    const startDate = start ? new Date(start) : null;
+    const endDate = end ? new Date(end) : null;
 
-    if (start && isNaN(startDate.getTime())) {
+    if (start && startDate !== null && isNaN(startDate.getTime())) {
       throw new BadRequestException('Invalid start date format');
     }
-    if (end && isNaN(endDate.getTime())) {
+    if (end && endDate !== null && isNaN(endDate.getTime())) {
       throw new BadRequestException('Invalid end date format');
     }
     return await this._movieService.getMoviesByDateRange(startDate, endDate);

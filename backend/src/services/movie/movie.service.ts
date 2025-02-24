@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import {
   EntityRepository,
   LoadStrategy,
@@ -8,7 +8,8 @@ import {
   FilterQuery,
 } from '@mikro-orm/core';
 import { Movie } from '../../entities/movie.entity';
-import { MovieDto } from 'backend/src/models/movie.dto';
+import { MovieDto } from '../../models/movie.dto';
+import { HttpStatus } from '../../utils/http-status';
 
 @Injectable()
 class MovieService {
@@ -16,7 +17,7 @@ class MovieService {
     @InjectRepository(Movie)
     private readonly _movieService: EntityRepository<Movie>,
     private readonly _em: EntityManager,
-  ) {}
+  ) { }
 
   public async getAll(): Promise<MovieDto[]> {
     // const dateFilter = {};
@@ -62,30 +63,35 @@ class MovieService {
         orderBy: { id: QueryOrder.ASC },
       },
     );
-
+    if (!movie || movie.length === 0) {
+      throw new HttpException(`no movies found`, HttpStatus.NOT_FOUND);
+    }
     return movie;
   }
 
   public async getMoviesByDateRange(
-    start?: Date,
-    end?: Date,
+    start?: Date | null,
+    end?: Date | null,
   ): Promise<MovieDto[]> {
     const dateRange: FilterQuery<Movie> = {};
 
     if (start && end) {
+      dateRange.date = {};
       dateRange.date = { $gte: start, $lte: end };
     } else if (start) {
       dateRange.date = { $gte: start };
     } else if (end) {
       dateRange.date = { $lte: end };
     }
+
+
     const movies = await this._movieService.find(dateRange, {
-      // populate: [],
-      // populateOrderBy: { actor: { id: QueryOrder.ASC } },
       strategy: LoadStrategy.SELECT_IN,
       limit: 10,
       offset: 0,
       orderBy: { id: QueryOrder.ASC },
+      populate: ['actor'],
+      populateOrderBy: { actor: { id: QueryOrder.ASC } },
     });
     return movies;
   }
@@ -101,11 +107,7 @@ class MovieService {
 
   public async removeId(id: number): Promise<boolean> {
     const movie = await this._movieService.nativeDelete({ id });
-    if (!movie) {
-      return false;
-    }
-    await this._movieService.nativeDelete(movie);
-    return true;
+    return movie > 0
   }
   // private getDateFilter(date: Date | null): object {
   //   return date

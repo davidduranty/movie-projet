@@ -6,8 +6,8 @@ import {
 } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Productor } from 'backend/src/entities/productor.entity';
-import { ProductorDto } from 'backend/src/models/productor.dto';
+import { Productor } from '../../entities/productor.entity';
+import { ProductorDto } from '../../models/productor.dto';
 
 @Injectable()
 class ProductorService {
@@ -53,18 +53,14 @@ class ProductorService {
     addProductor.firstname = productorDto.firstname;
     addProductor.age = productorDto.age;
     addProductor.now = productorDto.now;
-    this._em.persistAndFlush(addProductor);
+    await this._em.persistAndFlush(addProductor);
 
     return addProductor;
   }
 
   public async removeProductore(id: number): Promise<boolean> {
-    const productor = await this._productorService.nativeDelete({ id });
-    if (!productor) {
-      return false;
-    }
-    await this._productorService.nativeDelete(productor);
-    return true;
+    const deletedCount = await this._productorService.nativeDelete({ id });
+    return deletedCount > 0;
   }
 }
 export { ProductorService };
