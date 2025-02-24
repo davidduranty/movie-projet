@@ -70,8 +70,8 @@ class MovieService {
   }
 
   public async getMoviesByDateRange(
-    start?: Date,
-    end?: Date,
+    start?: Date | null,
+    end?: Date | null,
   ): Promise<MovieDto[]> {
     const dateRange: FilterQuery<Movie> = {};
 

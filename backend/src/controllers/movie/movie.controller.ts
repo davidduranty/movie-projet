@@ -77,19 +77,19 @@ class MovieController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'A movie add',
+    description: 'Movies by release date range',
   })
   public async getMoviesByDate(
-    @Query('start') start?: string,
-    @Query('end') end?: string,
+    @Query('start') start?: Date | null,
+    @Query('end') end?: Date | null,
   ): Promise<MovieDto[]> {
-    const startDate = start ? new Date(start) : new Date(0);
-    const endDate = end ? new Date(end) : new Date();
+    const startDate = start ? new Date(start) : null;
+    const endDate = end ? new Date(end) : null;
 
-    if (start && isNaN(startDate.getTime())) {
+    if (start && startDate !== null && isNaN(startDate.getTime())) {
       throw new BadRequestException('Invalid start date format');
     }
-    if (end && isNaN(endDate.getTime())) {
+    if (end && endDate !== null && isNaN(endDate.getTime())) {
       throw new BadRequestException('Invalid end date format');
     }
     return await this._movieService.getMoviesByDateRange(startDate, endDate);
