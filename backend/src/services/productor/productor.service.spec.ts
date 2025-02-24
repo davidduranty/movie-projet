@@ -104,7 +104,7 @@ describe('ProductorService', () => {
       //Arrange
       mockProductorRepository.nativeDelete.mockResolvedValue(1);
       //Act
-      const result = await productorService.removeProductore(1);
+      const result = await productorService.removeProductor(1);
       //Assert
       expect(result).toBe(true);
       expect(mockProductorRepository.nativeDelete).toHaveBeenCalledWith({

@@ -15,7 +15,7 @@ class ProductorService {
     @InjectRepository(Productor)
     private readonly _productorService: EntityRepository<Productor>,
     private readonly _em: EntityManager,
-  ) {}
+  ) { }
 
   public async getAll(): Promise<ProductorDto[]> {
     const productors = await this._productorService.find(
@@ -58,7 +58,7 @@ class ProductorService {
     return addProductor;
   }
 
-  public async removeProductore(id: number): Promise<boolean> {
+  public async removeProductor(id: number): Promise<boolean> {
     const deletedCount = await this._productorService.nativeDelete({ id });
     return deletedCount > 0;
   }
