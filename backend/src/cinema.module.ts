@@ -20,7 +20,7 @@ class CinemaModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware) // Applique le middleware
-      .forRoutes(MovieController, ActorController, ProductorController); // Applique le middleware à toutes les routes du contrôleur
+      .forRoutes(MovieController, ActorController, ProductorController);
   }
 }
 export { CinemaModule };
