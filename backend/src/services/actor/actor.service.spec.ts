@@ -49,7 +49,9 @@ describe('ActorService', () => {
         },
         {
           provide: EntityManager,
-          useValue: mockActorEntities,
+          useValue: {
+            persistAndFlush: jest.fn(),
+          },
         },
       ],
     }).compile();

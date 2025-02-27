@@ -11,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Actor } from './actor.entity';
 import { Movie } from './movie.entity';
 
-@Entity({ schema: 'movie' })
+@Entity({ schema: 'movie', tableName: 'productor' })
 class Productor extends BaseEntity {
   @PrimaryKey({ autoincrement: true })
   id!: number;
@@ -48,18 +48,6 @@ class Productor extends BaseEntity {
 
   @ManyToMany({ entity: () => Movie, mappedBy: 'productor', eager: false })
   dataMovies = new Collection<Movie>(this);
-
-  // toJSON() {
-  //   return {
-  //     id: this.id,
-  //     lastname: this.lastname,
-  //     firstname: this.firstname,
-  //     age: this.age,
-  //     now: this.now,
-  //     actors: this.actors.getIdentifiers(), // Renvoie juste les IDs des acteurs
-  //     dataMovies: this.dataMovies.getIdentifiers(), // Renvoie juste les IDs des films
-  //   };
-  // }
 }
 
 export { Productor };
