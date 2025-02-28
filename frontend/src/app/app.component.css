@@ -1,7 +1,6 @@
 section {
   margin: 0 25%;
   max-width: 100%;
-  /* background-color: #433352; */
   border-radius: 6px;
   border: none;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
@@ -40,4 +39,9 @@ div {
   margin: 10rem 0;
   display: flex;
   justify-content: center;
+}
+
+.active {
+  background-color: yellow;
+
 }
