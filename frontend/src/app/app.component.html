@@ -2,12 +2,14 @@
 
 <section>
   <p class="actions">
-    <button type="button">Actor</button>
-    <button type="button">Movie</button>
-    <button type="button">Productor</button>
+    <button type="button" routerLink="/actor" routerLinkActive="active">Actor</button>
+    <button type="button" routerLink="/movie" routerLinkActive="active">Movie</button>
+    <button type="button" routerLink="/productor" routerLinkActive="active">Productor</button>
   </p>
 </section>
 
 <div>
   <h1>MERCI DE CHOISIR UN THEME !</h1>
 </div>
+
+<router-outlet />
