@@ -6,6 +6,7 @@ import { Lien } from '../../utils/liens';
 })
 export class ActorService {
   private url = Lien.getAllActors;
+  private urlDelete = Lien.urlActor;
 
   constructor() { }
 
@@ -19,6 +20,20 @@ export class ActorService {
     } catch (error) {
       console.error('Error fetching actors:', error);
       return [];
+    }
+  }
+  async delateActor(id: number): Promise<Actor | null> {
+    try {
+      const response = await fetch(`${this.urlDelete}/${id}`, {
+        method: 'DELETE'
+      })
+      if (!response.ok) {
+        throw new Error('Échec de la suppression de l Acteur');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l Acteur :', error);
+      return null;
     }
   }
 }

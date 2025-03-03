@@ -23,5 +23,16 @@ export class ActorComponent implements OnInit {
       console.error('Error loading actors:', error);
     });
   }
+
+  async deleteActor(id: number): Promise<void> {
+    const success = await this.actorService.delateActor(id)
+    window.location.reload();
+    if (success) {
+      this.actors = this.actors.filter(actor => actor.id !== id)
+    } else {
+      console.error("Impossible de supprimer l'acteur."
+      )
+    }
+  }
 }
 
