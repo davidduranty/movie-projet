@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie/movie.service';
 
@@ -10,7 +10,8 @@ import { MovieService } from '../../services/movie/movie.service';
 })
 export class MovieComponent implements OnInit {
   movies: Movie[] = [];
-  constructor(private movieService: MovieService) { }
+
+  constructor(private movieService: MovieService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.movieService.getAllMovies().then(
@@ -20,5 +21,14 @@ export class MovieComponent implements OnInit {
     ).catch(error => {
       console.error('Error loading movies:', error)
     })
+  }
+  async deleteMovie(id: number) {
+    const success = await this.movieService.deleteMovie(id);
+    if (success) {
+      this.movies = this.movies.filter(movie => movie.id !== id)
+      this.cdr.detectChanges();
+    } else {
+      console.error("Impossible de supprimer le film.");
+    }
   }
 }
