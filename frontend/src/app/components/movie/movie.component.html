@@ -10,16 +10,19 @@
       </tr>
     </thead>
     <tbody>
+      @for (movie of movies; track movie.id) {
+
       <tr>
-        <td>1</td>
-        <td>Scream</td>
-        <td>2010/01/01</td>
-        <td>Horreur</td>
+        <td>{{movie.id}}</td>
+        <td>{{movie.title}}</td>
+        <td>{{movie.date}}</td>
+        <td>{{movie.genre}}</td>
         <td>
           <span>Remove</span>
           <span>Edit</span>
         </td>
       </tr>
+      }
 
     </tbody>
   </table>

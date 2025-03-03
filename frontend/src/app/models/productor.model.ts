@@ -1,4 +1,4 @@
-interface Productor {
+export interface Productor {
   id: number;
   lastname: string;
   firstname: string;

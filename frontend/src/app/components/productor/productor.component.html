@@ -5,26 +5,25 @@
         <th>Id</th>
         <th>Lastname</th>
         <th>Firstname</th>
-        <th>Start</th>
-        <th>End</th>
         <th>Age</th>
+        <th>Now</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
+      @for (productor of productors; track productor.id) {
       <tr>
-        <td>1</td>
-        <td>Doe</td>
-        <td>John</td>
-        <td>1975-05-02</td>
-        <td>null</td>
-        <td>49</td>
+        <td>{{productor.id}}</td>
+        <td>{{productor.lastname}}</td>
+        <td>{{productor.firstname}}</td>
+        <td>{{productor.age}}</td>
+        <td>{{productor.now}}</td>
         <td>
           <span>Remove</span>
           <span>Edit</span>
         </td>
       </tr>
-
+      }
     </tbody>
   </table>
 </main>
