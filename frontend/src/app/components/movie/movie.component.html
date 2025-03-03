@@ -17,9 +17,9 @@
         <td>{{movie.title}}</td>
         <td>{{movie.date}}</td>
         <td>{{movie.genre}}</td>
-        <td>
-          <span (click)="deleteMovie(movie.id)">Remove</span>
-          <span>Edit</span>
+        <td class="btn">
+          <button type="button" (click)="deleteMovie(movie.id)">Remove</button>
+          <button>Edit</button>
         </td>
       </tr>
       }

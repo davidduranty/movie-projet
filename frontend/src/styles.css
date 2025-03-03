@@ -64,19 +64,25 @@ thead th:last-child {
   width: 100px;
 }
 
-span {
-  margin-right: 5px;
-  padding: 5px 30px;
+.btn {
+  display: flex;
 }
 
-span:nth-child(1) {
+button {
+  margin-right: 5px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+}
+
+button:nth-child(1) {
   background: red;
   color: black;
   border-radius: 5px;
 
 }
 
-span:nth-child(2) {
+button:nth-child(2) {
   border-radius: 5px;
   background: green;
   color: black;
