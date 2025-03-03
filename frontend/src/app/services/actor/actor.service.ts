@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actor } from '../../models/actor.model';
+import { Lien } from '../../utils/liens';
 @Injectable({
   providedIn: 'root'
 })
 export class ActorService {
-  private url = "http://localhost:3004/actors/all";
+  private url = Lien.getAllActors;
 
   constructor() { }
 

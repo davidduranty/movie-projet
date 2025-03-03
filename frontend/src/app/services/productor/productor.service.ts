@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Productor } from '../../models/productor.model';
+import { Lien } from '../../utils/liens';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductorService {
-  private url = "http://localhost:3004/productors/all";
+  private url = Lien.getAllProductors;
   constructor() { }
 
   async getAllProductor(): Promise<Productor[]> {

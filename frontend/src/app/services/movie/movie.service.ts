@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../../models/movie.model';
+import { Lien } from '../../utils/liens';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private url = "http://localhost:3004/movies/all";
+  private url = Lien.getAllMovies;
 
   constructor() { }
 
