@@ -8,9 +8,76 @@ html {
 
 body {
   font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top left, #181023, #0b0519);
+  /* background: radial-gradient(circle at top left, #181023, #0b0519); */
   color: #c3b3d8;
   margin: 0;
   padding: 0;
   height: 100%;
+}
+
+main {
+  background: white;
+  margin: 0 auto;
+  width: 70%;
+
+}
+
+table {
+  table-layout: fixed;
+  min-width: 100%;
+  width: auto;
+  border-collapse: collapse;
+  box-shadow: 0 5px 20px black;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+thead tr {
+  background: midnightblue;
+  color: #fff;
+  text-align: left;
+}
+
+th,
+td {
+  border-radius: 4px 4px 0 0;
+  padding: 15px 20px;
+}
+
+tbody tr,
+td,
+th {
+  border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid midnightblue;
+  border-radius: 0 0 20px 4px;
+
+}
+
+thead th:last-child {
+  width: 100px;
+}
+
+span {
+  margin-right: 5px;
+  padding: 5px 30px;
+}
+
+span:nth-child(1) {
+  background: red;
+  color: black;
+  border-radius: 5px;
+
+}
+
+span:nth-child(2) {
+  border-radius: 5px;
+  background: green;
+  color: black;
 }
