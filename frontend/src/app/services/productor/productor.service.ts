@@ -7,6 +7,7 @@ import { Lien } from '../../utils/liens';
 })
 export class ProductorService {
   private url = Lien.getAllProductors;
+  private urlProductor = Lien.urlProductor
   constructor() { }
 
   async getAllProductor(): Promise<Productor[]> {
@@ -19,6 +20,20 @@ export class ProductorService {
     } catch (error) {
       console.error('Error fetching productors:', error);
       return [];
+    }
+  }
+  async deleteProductor(id: number): Promise<Productor | null> {
+    try {
+      const response = await fetch(`${this.urlProductor}/${id}`, {
+        method: 'DELETE'
+      })
+      if (!response.ok) {
+        throw new Error('Échec de la suppression du producteur');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du producteur :', error);
+      return null;
     }
   }
 }

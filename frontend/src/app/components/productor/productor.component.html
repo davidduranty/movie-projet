@@ -19,7 +19,7 @@
         <td>{{productor.age}}</td>
         <td>{{productor.now}}</td>
         <td class="btn">
-          <button>Remove</button>
+          <button type="button" (click)="deleteProductor(productor.id)">Remove</button>
           <button>Edit</button>
         </td>
       </tr>
