@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
+import { CommonModule } from '@angular/common';
+
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, HeaderComponent, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

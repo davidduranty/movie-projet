@@ -12,18 +12,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Doe</td>
-        <td>John</td>
-        <td>1975-05-02</td>
-        <td>1975-05-02</td>
-        <td>France</td>
+      @for (actor of actors; track actor.id) {
+      <tr class="line">
+        <td>{{actor.id}}</td>
+        <td>{{actor.lastname}}</td>
+        <td>{{actor.firstname}}</td>
+        <td>{{actor.start}}</td>
+        <td>{{actor.end}}</td>
+        <td>{{actor.country}}</td>
         <td>
           <span>Remove</span>
           <span>Edit</span>
         </td>
       </tr>
+      }
 
     </tbody>
   </table>
