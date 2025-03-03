@@ -31,7 +31,6 @@ button[type="button"] {
 button[type="button"]:hover,
 button[type="button"]:active {
   color: #d0c6e1;
-  background: #433352;
 }
 
 .active {
