@@ -22,4 +22,13 @@ export class ProductorComponent implements OnInit {
       })
 
   }
+  async deleteProductor(id: number): Promise<void> {
+    const success = await this.productorService.deleteProductor(id);
+    window.location.reload();
+    if (success) {
+      this.productors = this.productors.filter(data => data.id !== id)
+    } else {
+      console.error("Impossible de supprimer le producteur.");
+    }
+  }
 }
