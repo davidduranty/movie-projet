@@ -7,6 +7,7 @@ import { Lien } from '../../utils/liens';
 })
 export class MovieService {
   private url = Lien.getAllMovies;
+  private urlDelete = Lien.urlMovie;
 
   constructor() { }
 
@@ -20,6 +21,20 @@ export class MovieService {
     } catch (error) {
       console.error('Error fetching movies:', error);
       return [];
+    }
+  }
+  async deleteMovie(id: number): Promise<Movie | null> {
+    try {
+      const response = await fetch(`${this.urlDelete}/${id}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Échec de la suppression du film');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du film :', error);
+      return null;
     }
   }
 }
