@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Productor } from '../../models/productor.model';
 import { Lien } from '../../utils/liens';
+import { response } from 'express';
+import { catchError, Observable, throwError } from 'rxjs';
+import { subscribe } from 'diagnostics_channel';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductorService {
+  // productor: Productor[] = []
   private url = Lien.getAllProductors;
   private urlProductor = Lien.urlProductor
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   async getAllProductor(): Promise<Productor[]> {
     try {
@@ -22,6 +27,17 @@ export class ProductorService {
       return [];
     }
   }
+
+  addProductor(productor: Productor): Observable<Productor> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<Productor>(`${this.urlProductor}/add-productor`, productor, { headers })
+      .pipe(
+        catchError(error => {
+          return throwError(() => new Error(error + '❌ Impossible d\'ajouter le producteur.'));
+        })
+      );
+  }
+
   async deleteProductor(id: number): Promise<Productor | null> {
     try {
       const response = await fetch(`${this.urlProductor}/${id}`, {
