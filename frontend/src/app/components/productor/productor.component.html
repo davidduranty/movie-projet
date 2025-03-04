@@ -1,3 +1,7 @@
+@if(isAddProductor) {
+<app-new-productor (close)="onCloseAddProductor()" />
+}
+
 <main>
   <table>
     <thead>
@@ -20,10 +24,13 @@
         <td>{{productor.now}}</td>
         <td class="btn">
           <button type="button" (click)="deleteProductor(productor.id)">Remove</button>
-          <button>Edit</button>
+          <button>Modify</button>
         </td>
       </tr>
       }
     </tbody>
   </table>
 </main>
+<div class="btn-add-contain">
+  <button class="btn-add" (click)="onAddProductor()">Add</button>
+</div>

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Productor } from '../../models/productor.model';
 import { ProductorService } from '../../services/productor/productor.service';
+import { NewProductorComponent } from './new-productor/new-productor.component';
+
 
 @Component({
   selector: 'app-productor',
-  imports: [],
+  imports: [NewProductorComponent],
   templateUrl: './productor.component.html',
   styleUrl: './productor.component.css'
 })
 export class ProductorComponent implements OnInit {
   productors: Productor[] = []
+  isAddProductor: boolean = false;
 
   constructor(private productorService: ProductorService) { }
 
@@ -21,6 +24,15 @@ export class ProductorComponent implements OnInit {
         console.error('Error loading productor:', error)
       })
 
+  }
+  onAddProductor() {
+    this.isAddProductor = true
+  }
+  onCloseAddProductor() {
+    this.isAddProductor = false;
+  }
+  addProductor(productor: Productor): void {
+    this.productorService.addProductor(productor).subscribe();
   }
   async deleteProductor(id: number): Promise<void> {
     const success = await this.productorService.deleteProductor(id);

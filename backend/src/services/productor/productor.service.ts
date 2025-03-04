@@ -54,7 +54,6 @@ class ProductorService {
     addProductor.age = productorDto.age;
     addProductor.now = productorDto.now;
     await this._em.persistAndFlush(addProductor);
-
     return addProductor;
   }
 

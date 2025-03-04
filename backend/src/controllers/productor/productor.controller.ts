@@ -68,6 +68,7 @@ class ProductorController {
     @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
   ) {
     const { productorDto } = data;
+    console.log('📥 Données reçues:', productorDto);
     return await this._productorService.post(productorDto);
   }
 
