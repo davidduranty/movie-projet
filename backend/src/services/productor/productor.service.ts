@@ -15,7 +15,7 @@ class ProductorService {
     @InjectRepository(Productor)
     private readonly _productorService: EntityRepository<Productor>,
     private readonly _em: EntityManager,
-  ) {}
+  ) { }
 
   public async getAll(): Promise<ProductorDto[]> {
     const productors = await this._productorService.find(
@@ -54,11 +54,10 @@ class ProductorService {
     addProductor.age = productorDto.age;
     addProductor.now = productorDto.now;
     await this._em.persistAndFlush(addProductor);
-
     return addProductor;
   }
 
-  public async removeProductore(id: number): Promise<boolean> {
+  public async removeProductor(id: number): Promise<boolean> {
     const deletedCount = await this._productorService.nativeDelete({ id });
     return deletedCount > 0;
   }

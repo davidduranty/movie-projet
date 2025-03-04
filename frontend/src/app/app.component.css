@@ -1,0 +1,39 @@
+section {
+  margin: 0 25%;
+  max-width: 100%;
+  border-radius: 6px;
+  border: none;
+  overflow: hidden;
+  padding: 1rem;
+  top: 5rem;
+}
+
+.actions {
+  margin: 1rem 10rem 2rem;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0.25rem;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 0.35rem 1.25rem;
+  border-radius: 4px;
+  background-color: #450d80;
+}
+
+button[type="button"] {
+  color: #bdadcf;
+}
+
+button[type="button"]:hover,
+button[type="button"]:active {
+  color: #d0c6e1;
+}
+
+.active {
+  background-color: #9871bc;
+
+}

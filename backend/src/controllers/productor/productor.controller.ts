@@ -15,7 +15,7 @@ import { HttpStatus } from '../../utils/http-status';
 
 @Controller('productors')
 class ProductorController {
-  constructor(private readonly _productorService: ProductorService) {}
+  constructor(private readonly _productorService: ProductorService) { }
 
   @Get('all')
   @ApiOperation({
@@ -26,7 +26,11 @@ class ProductorController {
     description: 'All Productors',
   })
   public async getAllProductor(): Promise<ProductorDto[]> {
-    return await this._productorService.getAll();
+    const result = await this._productorService.getAll();
+    if (!result) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
+    return result
   }
 
   @Get(':id')
@@ -64,6 +68,7 @@ class ProductorController {
     @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
   ) {
     const { productorDto } = data;
+    console.log('📥 Données reçues:', productorDto);
     return await this._productorService.post(productorDto);
   }
 
@@ -82,7 +87,7 @@ class ProductorController {
     )
     id: number,
   ): Promise<void> {
-    const productor = await this._productorService.removeProductore(id);
+    const productor = await this._productorService.removeProductor(id);
     if (!productor) {
       throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
     }

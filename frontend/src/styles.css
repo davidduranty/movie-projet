@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: black;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  background: white;
+}
+
+table {
+  table-layout: auto;
+  width: 100%;
+  width: auto;
+  border-collapse: collapse;
+  box-shadow: 0 5px 20px black;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+thead tr {
+  background: #450d80;
+  color: #fff;
+  text-align: left;
+}
+
+th,
+td {
+  border-radius: 4px 4px 0 0;
+  padding: 10px 15px;
+}
+
+
+
+tbody tr,
+td,
+th {
+  border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid #450d80;
+  border-radius: 0 0 20px 4px;
+
+}
+
+thead th:last-child {
+  width: 100px;
+}
+
+.btn {
+  display: flex;
+}
+
+button {
+  margin-right: 5px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+}
+
+button:nth-child(1) {
+  background: red;
+  color: #fff;
+  border-radius: 5px;
+
+}
+
+button:nth-child(2) {
+  border-radius: 5px;
+  background: rgb(55, 147, 55);
+  color: #fff;
+}
+
+.btn-add-contain {
+  width: 70%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 70px;
+  margin-top: 20px;
+}

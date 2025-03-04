@@ -1,0 +1,36 @@
+@if(isAddProductor) {
+<app-new-productor (close)="onCloseAddProductor()" />
+}
+
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Lastname</th>
+        <th>Firstname</th>
+        <th>Age</th>
+        <th>Now</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (productor of productors; track productor.id) {
+      <tr>
+        <td>{{productor.id}}</td>
+        <td>{{productor.lastname}}</td>
+        <td>{{productor.firstname}}</td>
+        <td>{{productor.age}}</td>
+        <td>{{productor.now}}</td>
+        <td class="btn">
+          <button type="button" (click)="deleteProductor(productor.id)">Remove</button>
+          <button>Modify</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</main>
+<div class="btn-add-contain">
+  <button class="btn-add" (click)="onAddProductor()">Add</button>
+</div>

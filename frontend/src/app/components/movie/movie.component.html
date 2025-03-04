@@ -1,0 +1,32 @@
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Genre</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (movie of movies; track movie.id) {
+
+      <tr>
+        <td>{{movie.id}}</td>
+        <td>{{movie.title}}</td>
+        <td>{{movie.date}}</td>
+        <td>{{movie.genre}}</td>
+        <td class="btn">
+          <button type="button" (click)="deleteMovie(movie.id)">Remove</button>
+          <button>Modify</button>
+        </td>
+      </tr>
+      }
+
+    </tbody>
+  </table>
+</main>
+<div class="btn-add-contain">
+  <button class="btn-add">Add</button>
+</div>

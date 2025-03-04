@@ -11,7 +11,7 @@ import { Movie } from './movie.entity';
 import { Productor } from './productor.entity';
 import { BaseEntity } from './base.entity';
 
-@Entity({ schema: 'movie' })
+@Entity({ schema: 'movie', tableName: 'actor' })
 class Actor extends BaseEntity {
   @PrimaryKey({ autoincrement: true })
   id!: number;

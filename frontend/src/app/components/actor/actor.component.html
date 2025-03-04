@@ -1,0 +1,35 @@
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Lastname</th>
+        <th>Firstname</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Country</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (actor of actors; track actor.id) {
+      <tr class="line">
+        <td>{{actor.id}}</td>
+        <td>{{actor.lastname}}</td>
+        <td>{{actor.firstname}}</td>
+        <td>{{actor.start}}</td>
+        <td>{{actor.end}}</td>
+        <td>{{actor.country}}</td>
+        <td class="btn">
+          <button type="button" (click)="deleteActor(actor.id)">Remove</button>
+          <button>Modify</button>
+        </td>
+      </tr>
+      }
+
+    </tbody>
+  </table>
+</main>
+<div class="btn-add-contain">
+  <button class="btn-add">Add</button>
+</div>
