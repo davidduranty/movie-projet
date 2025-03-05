@@ -1,5 +1,5 @@
 @if(isAddProductor) {
-<app-new-productor (close)="onCloseAddProductor()" />
+<app-new-productor (close)="onCloseAddProductor()" (productorAdded)="onProductorAdded($event)" />
 }
 
 <main>

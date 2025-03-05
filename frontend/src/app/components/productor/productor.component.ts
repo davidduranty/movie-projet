@@ -31,6 +31,10 @@ export class ProductorComponent implements OnInit {
   onCloseAddProductor() {
     this.isAddProductor = false;
   }
+  onProductorAdded(newProductor: Productor) {
+    this.productors.push(newProductor); // Ajoute le nouveau producteur à la liste
+    this.onCloseAddProductor(); // Ferme le formulaire après l'ajout
+  }
   async deleteProductor(id: number): Promise<void> {
     const success = await this.productorService.deleteProductor(id);
     window.location.reload();
