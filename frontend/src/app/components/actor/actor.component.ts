@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActorService } from '../../services/actor/actor.service';
 import { Actor } from '../../models/actor.model';
+import { NewActorComponent } from './new-actor/new-actor.component';
 
 @Component({
   selector: 'app-actor',
-  imports: [],
+  imports: [NewActorComponent],
   templateUrl: './actor.component.html',
   styleUrl: './actor.component.css'
 })

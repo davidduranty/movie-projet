@@ -31,7 +31,21 @@ export class NewProductorComponent {
       age: this.enteredAge,
       now: this.enteredNow,
     }
-    this.productorService.addProductor(newProductor).subscribe();
+    this.productorService.addProductor(newProductor)
+    // .then(savedProductor => {
+    //   if (savedProductor) {
+    //     this.productorAdded.emit(savedProductor);
+
+    //   } else {
+    //     console.log(newProductor)
+    //     console.error('Le producteur n\'a pas été ajouté correctement');
+    //   }
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+    window.location.reload();
     this.close.emit();
+
   }
 }
