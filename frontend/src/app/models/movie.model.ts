@@ -1,6 +1,6 @@
 export interface Movie {
   id: number;
   title: string;
-  date: Date;
+  date: string;
   genre: string
 }

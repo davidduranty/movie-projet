@@ -1,3 +1,6 @@
+@if(isAddMovie) {
+<app-new-movie (close)="onCloseAddMovie()" (movieAdded)="onMovieAdded($event)" />
+}
 <main>
   <table>
     <thead>
@@ -28,5 +31,5 @@
   </table>
 </main>
 <div class="btn-add-contain">
-  <button class="btn-add">Add</button>
+  <button class="btn-add" (click)="onAddMovie()">Add</button>
 </div>

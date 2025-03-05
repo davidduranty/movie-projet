@@ -36,10 +36,10 @@ export class NewActorComponent {
       country: this.enteredCountry
     }
     try {
-      const savedProductor = await this.actorService.addActor(newActor);
+      const savedActor = await this.actorService.addActor(newActor);
 
-      if (savedProductor) {
-        this.actorAdded.emit(savedProductor);
+      if (savedActor) {
+        this.actorAdded.emit(savedActor);
         this.close.emit();
       } else {
         console.log(newActor);

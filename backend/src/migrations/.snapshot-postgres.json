@@ -27,13 +27,12 @@
         },
         "date": {
           "name": "date",
-          "type": "date",
+          "type": "DateType",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "length": 0,
-          "mappedType": "date"
+          "nullable": true,
+          "mappedType": "unknown"
         },
         "genre": {
           "name": "genre",
