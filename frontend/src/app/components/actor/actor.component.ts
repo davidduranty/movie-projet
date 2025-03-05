@@ -11,7 +11,8 @@ import { NewActorComponent } from './new-actor/new-actor.component';
 })
 export class ActorComponent implements OnInit {
 
-  actors: Actor[] = []
+  actors: Actor[] = [];
+  isAddActor: boolean = false
 
   constructor(private actorService: ActorService) { }
 
@@ -24,7 +25,16 @@ export class ActorComponent implements OnInit {
       console.error('Error loading actors:', error);
     });
   }
-
+  onAddActor() {
+    this.isAddActor = true;
+  }
+  onCloseAddActor() {
+    this.isAddActor = false;
+  }
+  async onActorAdded(newActor: Actor): Promise<void> {
+    this.actors.push(newActor);
+    this.onCloseAddActor();
+  }
   async deleteActor(id: number): Promise<void> {
     const success = await this.actorService.delateActor(id)
     window.location.reload();

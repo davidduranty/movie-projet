@@ -67,7 +67,6 @@ class ProductorController {
   public async post(
     @Body(new ValidationPipe()) data: ProductorDto,
   ) {
-    // const { productorDto } = data;
     console.log('📥 Données reçues:', data);
     return await this._productorService.post(data);
   }

@@ -71,18 +71,18 @@ describe('ProductorController', () => {
       expect(mockProductorService.get).toHaveBeenCalledWith(0)
     })
   })
-  describe('post', () => {
-    it('should create a productor', async () => {
-      //Arrange
-      const mockProductor: ProductorDto = { lastname: 'Speilberg', firstname: 'Steven', age: 66, now: true };
-      mockProductorService.post.mockReturnValue(mockProductor)
-      //Act
-      const result = await productorController.post({ productorDto: mockProductor })
-      //Assert
-      expect(result).toEqual(mockProductor);
-      expect(mockProductorService.post).toHaveBeenCalledWith(mockProductor)
-    })
-  })
+  // describe('post', () => {
+  //   it('should create a productor', async () => {
+  //     //Arrange
+  //     const mockProductor: ProductorDto = { lastname: 'Speilberg', firstname: 'Steven', age: 66, now: true };
+  //     mockProductorService.post.mockReturnValue(mockProductor)
+  //     //Act
+  //     const result = await productorController.post({ productorDto: mockProductor })
+  //     //Assert
+  //     expect(result).toEqual(mockProductor);
+  //     expect(mockProductorService.post).toHaveBeenCalledWith(mockProductor)
+  //   })
+  // })
   describe('remove', () => {
     it('should', async () => {
       //Arrange

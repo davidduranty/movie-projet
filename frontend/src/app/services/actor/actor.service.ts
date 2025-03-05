@@ -6,7 +6,7 @@ import { Lien } from '../../utils/liens';
 })
 export class ActorService {
   private url = Lien.getAllActors;
-  private urlDelete = Lien.urlActor;
+  private urlActor = Lien.urlActor;
 
   constructor() { }
 
@@ -22,9 +22,30 @@ export class ActorService {
       return [];
     }
   }
+
+  async addActor(actor: Actor): Promise<Actor | null> {
+    try {
+      const response = await fetch(`${this.urlActor}/add-actor`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(actor),
+      })
+      if (!response.ok) {
+        console.log(response)
+        throw new Error('Échec de la création de l acteur');
+      }
+      const savedActor = await response.json();
+      return savedActor;
+    } catch (error) {
+      console.error('Erreur lors de la création de l acteur :', error);
+      return null
+    }
+  }
   async delateActor(id: number): Promise<Actor | null> {
     try {
-      const response = await fetch(`${this.urlDelete}/${id}`, {
+      const response = await fetch(`${this.urlActor}/${id}`, {
         method: 'DELETE'
       })
       if (!response.ok) {

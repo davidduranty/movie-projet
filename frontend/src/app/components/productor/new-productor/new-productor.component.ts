@@ -13,8 +13,8 @@ export class NewProductorComponent {
   @Output() close = new EventEmitter<void>();
   @Output() productorAdded = new EventEmitter<Productor>();
   enteredId: number = 0;
-  enteredLastname = '';
-  enteredFirstname = '';
+  enteredLastname: string = '';
+  enteredFirstname: string = '';
   enteredAge: number = 0;
   enteredNow: boolean = true;
   constructor(private productorService: ProductorService) { }
@@ -23,29 +23,29 @@ export class NewProductorComponent {
     this.close.emit();
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     const newProductor: Productor = {
       id: this.enteredId,
       lastname: this.enteredLastname,
       firstname: this.enteredFirstname,
       age: this.enteredAge,
       now: this.enteredNow,
+    };
+
+    try {
+      const savedProductor = await this.productorService.addProductor(newProductor);
+
+      if (savedProductor) {
+        this.productorAdded.emit(savedProductor);
+        // window.location.reload(); // Recharge la page après un ajout réussi
+        this.close.emit(); // Ferme le formulaire
+      } else {
+        console.log(newProductor);
+        console.error('Le producteur n\'a pas été ajouté correctement');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du producteur:', error);
     }
-    this.productorService.addProductor(newProductor)
-    // .then(savedProductor => {
-    //   if (savedProductor) {
-    //     this.productorAdded.emit(savedProductor);
-
-    //   } else {
-    //     console.log(newProductor)
-    //     console.error('Le producteur n\'a pas été ajouté correctement');
-    //   }
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-    window.location.reload();
-    this.close.emit();
-
   }
+
 }
