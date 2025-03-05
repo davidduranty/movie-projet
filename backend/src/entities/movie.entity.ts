@@ -18,7 +18,7 @@ class Movie {
         description: "Année de sortie du film",
         example: "1984"
     })
-    @Property({ type: "date" })
+    @Property({ type: "DateType", nullable: true })
     date: Date;
 
     @ApiProperty({

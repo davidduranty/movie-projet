@@ -7,7 +7,7 @@ import { Lien } from '../../utils/liens';
 })
 export class MovieService {
   private url = Lien.getAllMovies;
-  private urlDelete = Lien.urlMovie;
+  private urlMovie = Lien.urlMovie;
 
   constructor() { }
 
@@ -23,9 +23,30 @@ export class MovieService {
       return [];
     }
   }
+
+  async addMovie(movie: Movie): Promise<Movie | null> {
+    try {
+      const add = await fetch(`${this.urlMovie}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(movie),
+      })
+      if (!add.ok) {
+        throw new Error('Echec de la création d un movie')
+      }
+      const savedMovie = await add.json();
+      return savedMovie;
+    } catch (error) {
+      console.error('Erreur lors de la création de l acteur :', error);
+      return null
+    }
+  }
+
   async deleteMovie(id: number): Promise<Movie | null> {
     try {
-      const response = await fetch(`${this.urlDelete}/${id}`, {
+      const response = await fetch(`${this.urlMovie}/${id}`, {
         method: 'DELETE'
       });
       if (!response.ok) {

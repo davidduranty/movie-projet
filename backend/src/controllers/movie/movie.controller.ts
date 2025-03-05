@@ -104,11 +104,11 @@ class MovieController {
     description: 'A movie add',
     type: MovieDto,
   })
-  public async addMovie(
-    @Body(new ValidationPipe()) data: { movieDto: MovieDto },
+  public async post(
+    @Body(new ValidationPipe()) data: MovieDto
   ) {
-    const { movieDto } = data;
-    return await this._movieService.post(movieDto);
+    console.log('📥 Données reçues:', data);
+    return await this._movieService.post(data);
   }
 
   @Delete(':id')
