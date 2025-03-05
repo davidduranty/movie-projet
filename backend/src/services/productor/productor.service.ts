@@ -24,7 +24,7 @@ class ProductorService {
         populate: ['dataMovies'],
         populateOrderBy: { dataMovies: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
-        limit: 10,
+        limit: 20,
         offset: 0,
         orderBy: { id: QueryOrder.ASC },
       },

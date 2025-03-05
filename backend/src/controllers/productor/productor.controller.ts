@@ -65,11 +65,11 @@ class ProductorController {
     type: ProductorDto,
   })
   public async post(
-    @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
+    @Body(new ValidationPipe()) data: ProductorDto,
   ) {
-    const { productorDto } = data;
-    console.log('📥 Données reçues:', productorDto);
-    return await this._productorService.post(productorDto);
+    // const { productorDto } = data;
+    console.log('📥 Données reçues:', data);
+    return await this._productorService.post(data);
   }
 
   @Delete(':id')

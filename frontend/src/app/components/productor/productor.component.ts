@@ -31,9 +31,6 @@ export class ProductorComponent implements OnInit {
   onCloseAddProductor() {
     this.isAddProductor = false;
   }
-  addProductor(productor: Productor): void {
-    this.productorService.addProductor(productor).subscribe();
-  }
   async deleteProductor(id: number): Promise<void> {
     const success = await this.productorService.deleteProductor(id);
     window.location.reload();
