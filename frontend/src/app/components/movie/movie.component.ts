@@ -36,6 +36,21 @@ export class MovieComponent implements OnInit {
       console.error('Error find movie:', error);
     };
   }
+  async searchId(inputValue: string): Promise<void> {
+    const id = Number(inputValue)
+    try {
+      const movieId = await this.movieService.getById(id)
+      if (movieId) {
+        this.movies = [movieId]
+        console.log('Movie fetched:', movieId);
+      } else {
+        console.warn('No movie found with the given ID')
+        this.movies = []
+      }
+    } catch (error) {
+      console.error('Error finding movie by id:', error);
+    }
+  }
   onAddMovie() {
     this.isAddMovie = true;
   }

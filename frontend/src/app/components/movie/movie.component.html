@@ -2,13 +2,21 @@
 <app-new-movie (close)="onCloseAddMovie()" (movieAdded)="onMovieAdded($event)" />
 }
 <div class="inputSearch">
-  <form (submit)="searchMovie(inputTitle.value)">
+  <form>
     <div class="container-input-search">
       <div class="input-container">
         <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by title</label>
-        <input #inputTitle type="text" class="form-control" id="search-text" aria-describedby="search-text"
+        <input #inputTitle type="text" class="form-control" id="search-title" aria-describedby="search-text"
           placeholder="Enter title to search" autofocus style="height: 30px;">
       </div>
+      <button class="btn-add" (click)="searchMovie(inputTitle.value)">Valid</button>
+      <div class="input-container">
+        <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by
+          id</label>
+        <input #inputId type="text" class="form-control" id="search-id" placeholder="Enter id to search"
+          style="height: 30px;margin-left: 10px;">
+      </div>
+      <button class="btn-add" (click)="searchId(inputId.value)">Valid</button>
       <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
     </div>
   </form>
@@ -26,7 +34,6 @@
     </thead>
     <tbody>
       @for (movie of movies ; track movie.id ) {
-
       <tr>
         <td>{{movie.id}}</td>
         <td>{{movie.title}}</td>
