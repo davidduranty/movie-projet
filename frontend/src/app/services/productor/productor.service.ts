@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Productor } from '../../models/productor.model';
 import { Lien } from '../../utils/liens';
-import { response } from 'express';
-import { catchError, Observable, throwError } from 'rxjs';
-import { subscribe } from 'diagnostics_channel';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductorService {
-  // productor: Productor[] = []
   private url = Lien.getAllProductors;
   private urlProductor = Lien.urlProductor
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   async getAllProductor(): Promise<Productor[]> {
     try {
@@ -27,15 +23,40 @@ export class ProductorService {
       return [];
     }
   }
+  async getByname(lastname: string): Promise<Productor[]> {
+    try {
+      const response = await fetch(`${this.urlProductor}?lastname=${encodeURIComponent(lastname)}`)
+      if (!response.ok) {
+        console.log("error")
+        throw new Error('Failed to fetch productor');
+      }
+      const productor = await response.json();
+      return productor;
+    } catch (error) {
+      console.error('Error fetching productors:', error);
+      return [];
+    }
+  }
 
-  addProductor(productor: Productor): Observable<Productor> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<Productor>(`${this.urlProductor}/add-productor`, productor, { headers })
-      .pipe(
-        catchError(error => {
-          return throwError(() => new Error(error + '❌ Impossible d\'ajouter le producteur.'));
-        })
-      );
+  async addProductor(productor: Productor): Promise<Productor | null> {
+    try {
+      const response = await fetch(`${this.urlProductor}/add-productor`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productor),
+      })
+      if (!response.ok) {
+        console.log(response)
+        throw new Error('Échec de la création du producteur');
+      }
+      const savedProductor = await response.json();
+      return savedProductor;
+    } catch (error) {
+      console.error('Erreur lors de la création du producteur :', error);
+      return null
+    }
   }
 
   async deleteProductor(id: number): Promise<Productor | null> {

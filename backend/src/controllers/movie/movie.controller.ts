@@ -48,6 +48,21 @@ class MovieController {
     }
     return result
   }
+  @Get()
+  @ApiOperation({
+    summary: 'Get movie by title'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'filter movies'
+  })
+  public async getByTitle(@Query('title') title: string): Promise<MovieDto[]> {
+    const result = await this._movieService.getByName(title);
+    if (!result) {
+      throw new NotFoundException('No movies found by title');
+    }
+    return result
+  }
 
   @Get('id/:id')
   @ApiOperation({
@@ -63,7 +78,7 @@ class MovieController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ): Promise<MovieDto[]> {
+  ): Promise<MovieDto> {
     const result = await this._movieService.getById(id);
     if (!result) {
       throw new NotFoundException('No movies found');
@@ -104,11 +119,11 @@ class MovieController {
     description: 'A movie add',
     type: MovieDto,
   })
-  public async addMovie(
-    @Body(new ValidationPipe()) data: { movieDto: MovieDto },
+  public async post(
+    @Body(new ValidationPipe()) data: MovieDto
   ) {
-    const { movieDto } = data;
-    return await this._movieService.post(movieDto);
+    console.log('📥 Données reçues:', data);
+    return await this._movieService.post(data);
   }
 
   @Delete(':id')

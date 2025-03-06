@@ -2,3 +2,9 @@
   background: rgb(55, 147, 55);
   color: #fff;
 }
+
+.btn-add,
+.btn-search {
+  margin-top: 25px;
+  height: 30px;
+}

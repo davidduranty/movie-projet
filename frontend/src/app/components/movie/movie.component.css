@@ -1,4 +1,12 @@
 .btn-add {
   background: rgb(55, 147, 55);
-  color: white;
+  color: #fff;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.btn-add,
+.btn-search {
+  margin-top: 25px;
+  height: 30px;
 }

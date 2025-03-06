@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Productor } from '../../models/productor.model';
 import { ProductorService } from '../../services/productor/productor.service';
 import { NewProductorComponent } from './new-productor/new-productor.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-productor',
-  imports: [NewProductorComponent],
+  imports: [NewProductorComponent, FormsModule],
   templateUrl: './productor.component.html',
   styleUrl: './productor.component.css'
 })
@@ -25,14 +26,25 @@ export class ProductorComponent implements OnInit {
       })
 
   }
+  async searchProductor(lastname: string): Promise<void> {
+    try {
+      const productorlist = this.productorService.getByname(lastname)
+      const firstLetter = lastname.charAt(0).toLowerCase();
+      this.productors = (await productorlist).filter(productor => productor.lastname?.toLowerCase().startsWith(firstLetter)
+      )
+    } catch (error) {
+      console.error('Error find productor:', error);
+    };
+  }
   onAddProductor() {
     this.isAddProductor = true
   }
   onCloseAddProductor() {
     this.isAddProductor = false;
   }
-  addProductor(productor: Productor): void {
-    this.productorService.addProductor(productor).subscribe();
+  onProductorAdded(newProductor: Productor) {
+    this.productors.push(newProductor); // Ajoute le nouveau producteur à la liste
+    this.onCloseAddProductor(); // Ferme le formulaire après l'ajout
   }
   async deleteProductor(id: number): Promise<void> {
     const success = await this.productorService.deleteProductor(id);

@@ -6,12 +6,14 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ProductorDto } from '../../models/productor.dto';
 import { ProductorService } from '../../services/productor/productor.service';
 import { HttpStatus } from '../../utils/http-status';
+import { MovieDto } from 'backend/src/models/movie.dto';
 
 @Controller('productors')
 class ProductorController {
@@ -29,6 +31,21 @@ class ProductorController {
     const result = await this._productorService.getAll();
     if (!result) {
       throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
+    }
+    return result
+  }
+  @Get()
+  @ApiOperation({
+    summary: 'Get a productor by lastname',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A productor by lastname',
+  })
+  public async getByName(@Query('lastname') lastname: string): Promise<ProductorDto[]> {
+    const result = this._productorService.getByName(lastname)
+    if (!result) {
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`)
     }
     return result
   }
@@ -65,11 +82,10 @@ class ProductorController {
     type: ProductorDto,
   })
   public async post(
-    @Body(new ValidationPipe()) data: { productorDto: ProductorDto },
+    @Body(new ValidationPipe()) data: ProductorDto,
   ) {
-    const { productorDto } = data;
-    console.log('📥 Données reçues:', productorDto);
-    return await this._productorService.post(productorDto);
+    console.log('📥 Données reçues:', data);
+    return await this._productorService.post(data);
   }
 
   @Delete(':id')

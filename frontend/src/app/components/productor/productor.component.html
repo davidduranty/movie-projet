@@ -1,7 +1,19 @@
 @if(isAddProductor) {
-<app-new-productor (close)="onCloseAddProductor()" />
+<app-new-productor (close)="onCloseAddProductor()" (productorAdded)="onProductorAdded($event)" />
 }
-
+<div class="inputSearch">
+  <form (submit)="searchProductor(inputProductor.value)">
+    <div class="container-input-search">
+      <div class="input-container">
+        <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search a
+          productor</label>
+        <input #inputProductor type="text" class="form-control" id="search-text" aria-describedby="search-text"
+          placeholder="Enter productor to search" autofocus style="height: 30px;">
+      </div>
+      <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
+    </div>
+  </form>
+</div>
 <main>
   <table>
     <thead>

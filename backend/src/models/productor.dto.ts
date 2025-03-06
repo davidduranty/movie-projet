@@ -1,6 +1,9 @@
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 class ProductorDto {
+  @IsNumber()
+  id: number
+
   @IsString()
   lastname: string;
 

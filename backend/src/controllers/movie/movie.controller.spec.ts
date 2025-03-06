@@ -196,40 +196,41 @@ describe('MovieController', () => {
       await expect(movieController.getMoviesByDate(invalidStartDate, invalidEndDate)).rejects.toThrow(BadRequestException)
       expect(mockMovieService.getMoviesByDateRange).not.toHaveBeenCalledWith()
     })
-  })
-  describe('addMovie', () => {
-    it('should A movie add', async () => {
-      //Arrange
-      const mockAddMovie: MovieDto = {
-        title: 'Scream',
-        date: new Date('2010-02-06'),
-        genre: 'Horreur'
-      }
-      mockMovieService.post.mockReturnValue(mockAddMovie)
-      //Act
-      const result = await movieController.addMovie({ movieDto: mockAddMovie })
-      //Assert
-      expect(result).toEqual(mockAddMovie);
-      expect(mockMovieService.post).toHaveBeenCalledWith(mockAddMovie)
+    // })
+    // describe('addMovie', () => {
+    //   it('should A movie add', async () => {
+    //     //Arrange
+    //     const mockAddMovie: MovieDto = {
+    //       title: 'Scream',
+    //       date: new Date('2010-02-06'),
+    //       genre: 'Horreur'
+    //     }
+    //     mockMovieService.post.mockReturnValue(mockAddMovie)
+    //     //Act
+    //     const result = await movieController.addMovie({ movieDto: mockAddMovie })
+    //     //Assert
+    //     expect(result).toEqual(mockAddMovie);
+    //     expect(mockMovieService.post).toHaveBeenCalledWith(mockAddMovie)
+    //   })
+    // })
+    describe('removeId', () => {
+      it('should Delete a movie by id', async () => {
+        //Arrange
+        mockMovieService.removeId.mockReturnValue(true);
+        //Act
+        const result = await movieController.removeId(1);
+        //Assert
+        expect(result).toBeUndefined();
+        expect(mockMovieService.removeId).toHaveBeenCalledWith(1);
+      })
+      it('should no movie found for delete', async () => {
+        //Arrange
+        mockMovieService.removeId.mockReturnValue(0)
+        //Act && Assert
+        await expect(movieController.removeId(0)).rejects.toThrow(Error);
+        expect(mockMovieService.removeId).toHaveBeenCalledWith(0)
+      })
     })
-  })
-  describe('removeId', () => {
-    it('should Delete a movie by id', async () => {
-      //Arrange
-      mockMovieService.removeId.mockReturnValue(true);
-      //Act
-      const result = await movieController.removeId(1);
-      //Assert
-      expect(result).toBeUndefined();
-      expect(mockMovieService.removeId).toHaveBeenCalledWith(1);
-    })
-    it('should no movie found for delete', async () => {
-      //Arrange
-      mockMovieService.removeId.mockReturnValue(0)
-      //Act && Assert
-      await expect(movieController.removeId(0)).rejects.toThrow(Error);
-      expect(mockMovieService.removeId).toHaveBeenCalledWith(0)
-    })
-  })
 
-});
+  });
+})

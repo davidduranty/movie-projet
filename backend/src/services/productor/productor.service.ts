@@ -5,9 +5,10 @@ import {
   QueryOrder,
 } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Productor } from '../../entities/productor.entity';
 import { ProductorDto } from '../../models/productor.dto';
+import { HttpStatus } from 'backend/src/utils/http-status';
 
 @Injectable()
 class ProductorService {
@@ -24,12 +25,33 @@ class ProductorService {
         populate: ['dataMovies'],
         populateOrderBy: { dataMovies: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
-        limit: 10,
+        limit: 20,
         offset: 0,
         orderBy: { id: QueryOrder.ASC },
       },
     );
     return productors;
+  }
+  public async getByName(lastname: string): Promise<ProductorDto[]> {
+    if (!lastname) {
+      throw new HttpException('Lastname is required', HttpStatus.BAD_REQUEST);
+    }
+    const filterName = { lastname: { $ilike: `%${lastname}%` } };
+    const productors = await this._productorService.find(
+      filterName,
+      {
+        populate: ['dataMovies'],
+        populateOrderBy: { dataMovies: { id: QueryOrder.ASC } },
+        strategy: LoadStrategy.SELECT_IN,
+        limit: 20,
+        offset: 0,
+        orderBy: { id: QueryOrder.ASC },
+      },
+    )
+    if (!productors || productors.length === 0) {
+      throw new HttpException('No actors found', HttpStatus.NOT_FOUND);
+    }
+    return productors
   }
 
   public async get(id: number): Promise<ProductorDto[]> {

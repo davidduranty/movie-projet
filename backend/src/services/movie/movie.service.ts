@@ -20,7 +20,6 @@ class MovieService {
   ) { }
 
   public async getAll(): Promise<MovieDto[]> {
-    // const dateFilter = {};
     const movies = await this._movieService.find(
       {},
       {
@@ -51,19 +50,18 @@ class MovieService {
     return movies;
   }
 
-  public async getById(id: number): Promise<MovieDto[]> {
-    const movie = await this._movieService.find(
+  public async getById(id: number): Promise<MovieDto> {
+    const movie = await this._movieService.findOne(
       { id: id },
       {
         populate: ['actor'],
         populateOrderBy: { actor: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
-        limit: 10,
         offset: 0,
         orderBy: { id: QueryOrder.ASC },
       },
     );
-    if (!movie || movie.length === 0) {
+    if (!movie) {
       throw new HttpException(`no movies found`, HttpStatus.NOT_FOUND);
     }
     return movie;

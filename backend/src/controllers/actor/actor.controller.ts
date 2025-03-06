@@ -63,14 +63,11 @@ class ActorController {
     description: 'New actor added',
     type: ActorDto,
   })
-  public async create(
+  public async post(
     @Body(new ValidationPipe())
-    data: {
-      actorDto: ActorDto;
-    },
-  ) {
-    const { actorDto } = data;
-    return await this._actorService.post(actorDto);
+    data: ActorDto) {
+    console.log('📥 Données reçues:', data);
+    return await this._actorService.post(data);
   }
   @Get('country')
   @ApiOperation({
