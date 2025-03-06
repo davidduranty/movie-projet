@@ -29,7 +29,7 @@ export class ActorService {
       return this.getAllActors();
     }
     try {
-      const response = await fetch(`${this.urlActor}/?lastname=${encodeURIComponent(lastname)}`)
+      const response = await fetch(`${this.urlActor}?lastname=${encodeURIComponent(lastname)}`)
       if (!response.ok) {
         console.log("error")
         throw new Error('Failed to fetch actors');

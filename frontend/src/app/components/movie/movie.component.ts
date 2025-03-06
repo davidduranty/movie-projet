@@ -28,13 +28,13 @@ export class MovieComponent implements OnInit {
     })
   }
   async searchMovie(title: string): Promise<void> {
-    this.movieService.getByMovie(title).then(
-      (findMovie: Movie[]) => {
-        this.movies = findMovie
-      }
-    ).catch(error => {
+    try {
+      const movieList = this.movieService.getByMovie(title)
+      const firstLetter = title.charAt(0).toLowerCase()
+      this.movies = (await movieList).filter(movie => movie.title?.toLowerCase().startsWith(firstLetter))
+    } catch (error) {
       console.error('Error find movie:', error);
-    });
+    };
   }
   onAddMovie() {
     this.isAddMovie = true;
