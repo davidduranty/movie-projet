@@ -48,6 +48,21 @@ class MovieController {
     }
     return result
   }
+  @Get()
+  @ApiOperation({
+    summary: 'Get movie by title'
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'filter movies'
+  })
+  public async getByTitle(@Query('title') title: string): Promise<MovieDto[]> {
+    const result = await this._movieService.getByName(title);
+    if (!result) {
+      throw new NotFoundException('No movies found by title');
+    }
+    return result
+  }
 
   @Get('id/:id')
   @ApiOperation({

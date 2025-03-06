@@ -7,7 +7,6 @@ import { Lien } from '../../utils/liens';
   providedIn: 'root'
 })
 export class ProductorService {
-  // productor: Productor[] = []
   private url = Lien.getAllProductors;
   private urlProductor = Lien.urlProductor
   constructor() { }

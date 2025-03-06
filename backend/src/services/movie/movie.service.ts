@@ -20,7 +20,6 @@ class MovieService {
   ) { }
 
   public async getAll(): Promise<MovieDto[]> {
-    // const dateFilter = {};
     const movies = await this._movieService.find(
       {},
       {

@@ -2,8 +2,16 @@
 <app-new-movie (close)="onCloseAddMovie()" (movieAdded)="onMovieAdded($event)" />
 }
 <div class="inputSearch">
-  <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
-    placeholder="Enter text to search" autofocus>
+  <form (submit)="searchMovie(inputTitle.value)">
+    <div class="container-input-search">
+      <div class="input-container">
+        <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by title</label>
+        <input #inputTitle type="text" class="form-control" id="search-text" aria-describedby="search-text"
+          placeholder="Enter title to search" autofocus style="height: 30px;">
+      </div>
+      <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
+    </div>
+  </form>
 </div>
 <main>
   <table>
