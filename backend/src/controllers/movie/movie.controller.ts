@@ -78,7 +78,7 @@ class MovieController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ): Promise<MovieDto[]> {
+  ): Promise<MovieDto> {
     const result = await this._movieService.getById(id);
     if (!result) {
       throw new NotFoundException('No movies found');

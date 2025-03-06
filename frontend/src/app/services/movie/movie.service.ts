@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { Lien } from '../../utils/liens';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,8 @@ export class MovieService {
   async getByMovie(title: string): Promise<Movie[]> {
     try {
       const response = await fetch(`${this.urlMovie}?title=${encodeURIComponent(title)}`)
+      console.log(response)
+
       if (!response.ok) {
         console.log("error")
         throw new Error('Failed to fetch movies');
@@ -35,6 +38,19 @@ export class MovieService {
     } catch (error) {
       console.error('Error fetching movies:', error);
       return [];
+    }
+  }
+  async getById(id: number): Promise<Movie | null> {
+    try {
+      const response = await fetch(`${this.urlMovie}/id/${id}`)
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Failed to fetch movies by id');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l id :', error);
+      return null
     }
   }
 
