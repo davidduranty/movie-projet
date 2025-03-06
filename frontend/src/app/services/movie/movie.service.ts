@@ -23,6 +23,20 @@ export class MovieService {
       return [];
     }
   }
+  async getByMovie(title: string): Promise<Movie[]> {
+    try {
+      const response = await fetch(`${this.urlMovie}?title=${encodeURIComponent(title)}`)
+      if (!response.ok) {
+        console.log("error")
+        throw new Error('Failed to fetch movies');
+      }
+      const movies = await response.json();
+      return movies;
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      return [];
+    }
+  }
 
   async addMovie(movie: Movie): Promise<Movie | null> {
     try {

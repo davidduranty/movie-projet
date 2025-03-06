@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class MovieComponent implements OnInit {
   movies: Movie[] = [];
   isAddMovie: boolean = false;
-  searchText: string = '';
+
 
   constructor(private movieService: MovieService) { }
 
@@ -26,6 +26,15 @@ export class MovieComponent implements OnInit {
     ).catch(error => {
       console.error('Error loading movies:', error)
     })
+  }
+  async searchMovie(title: string): Promise<void> {
+    this.movieService.getByMovie(title).then(
+      (findMovie: Movie[]) => {
+        this.movies = findMovie
+      }
+    ).catch(error => {
+      console.error('Error find movie:', error);
+    });
   }
   onAddMovie() {
     this.isAddMovie = true;
