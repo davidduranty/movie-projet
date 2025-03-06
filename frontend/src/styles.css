@@ -103,6 +103,21 @@ button:nth-child(2) {
 
 }
 
+.container-input-search {
+  display: flex;
+  height: 100px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
 .form-control {
   border: 2px solid #450d80;
   border-radius: 5px;
@@ -111,4 +126,5 @@ button:nth-child(2) {
 
 .btn-search {
   margin-left: 20px;
+  border-radius: 5px;
 }

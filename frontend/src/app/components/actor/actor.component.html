@@ -4,9 +4,15 @@
 
 <div class="inputSearch">
   <form (submit)="searchActor(lastnameInput.value)">
-    <input #lastnameInput type="text" class="form-control" id="search-text" aria-describedby="search-text"
-      placeholder="Enter text to search" autofocus />
-    <button class="btn-search" (click)="searchActor(lastnameInput.value)">Rechercher</button>
+    <div class="container-input-search">
+      <div class="input-container">
+        <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by name</label>
+        <input #lastnameInput type="text" class="form-control" id="search-text" aria-describedby="search-text"
+          placeholder="Enter lastname to search" autofocus style="height: 30px;" />
+      </div>
+      <button type="submit" class="btn-search">Search</button>
+      <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
+    </div>
   </form>
 </div>
 <main>
