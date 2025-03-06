@@ -23,6 +23,20 @@ export class ProductorService {
       return [];
     }
   }
+  async getByname(lastname: string): Promise<Productor[]> {
+    try {
+      const response = await fetch(`${this.urlProductor}?lastname=${encodeURIComponent(lastname)}`)
+      if (!response.ok) {
+        console.log("error")
+        throw new Error('Failed to fetch productor');
+      }
+      const productor = await response.json();
+      return productor;
+    } catch (error) {
+      console.error('Error fetching productors:', error);
+      return [];
+    }
+  }
 
   async addProductor(productor: Productor): Promise<Productor | null> {
     try {

@@ -26,14 +26,15 @@ export class ActorComponent implements OnInit {
       console.error('Error loading actors:', error);
     });
   }
-  searchActor(lastname: string): void {
-    this.actorService.getByLastname(lastname).then(
-      (findActor: Actor[]) => {
-        this.actors = findActor
-      }
-    ).catch(error => {
+  async searchActor(lastname: string): Promise<void> {
+    try {
+      const actorList = this.actorService.getByLastname(lastname)
+      const firstLetter = lastname.charAt(0).toLowerCase();
+      this.actors = (await actorList).filter(actor => actor.lastname?.toLowerCase().startsWith(firstLetter)
+      )
+    } catch (error) {
       console.error('Error find actors:', error);
-    });
+    };
   }
   onAddActor() {
     this.isAddActor = true;
