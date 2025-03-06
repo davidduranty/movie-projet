@@ -13,7 +13,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ProductorDto } from '../../models/productor.dto';
 import { ProductorService } from '../../services/productor/productor.service';
 import { HttpStatus } from '../../utils/http-status';
-import { MovieDto } from 'backend/src/models/movie.dto';
+
 
 @Controller('productors')
 class ProductorController {
@@ -50,7 +50,7 @@ class ProductorController {
     return result
   }
 
-  @Get(':id')
+  @Get('id/:id')
   @ApiOperation({
     summary: 'Get a productor by id',
   })
@@ -64,7 +64,7 @@ class ProductorController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ): Promise<ProductorDto[]> {
+  ): Promise<ProductorDto> {
     const result = await this._productorService.get(id);
     if (!result) {
       throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
