@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie/movie.service';
 import { NewMovieComponent } from './new-movie/new-movie.component';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-movie',
-  imports: [NewMovieComponent],
+  imports: [NewMovieComponent, FormsModule],
   templateUrl: './movie.component.html',
-  styleUrl: './movie.component.css'
+  styleUrls: ['./movie.component.css']
 })
 export class MovieComponent implements OnInit {
   movies: Movie[] = [];
   isAddMovie: boolean = false;
+  searchText: string = '';
 
   constructor(private movieService: MovieService) { }
 

@@ -95,3 +95,9 @@ button:nth-child(2) {
   padding-right: 70px;
   margin-top: 20px;
 }
+
+.inputSearch {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
