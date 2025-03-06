@@ -23,6 +23,25 @@ export class ActorService {
     }
   }
 
+  async getByLastname(lastname: string): Promise<Actor[]> {
+    if (!lastname) {
+      console.error('Error: Lastname parameter is required');
+      return this.getAllActors();
+    }
+    try {
+      const response = await fetch(`${this.urlActor}/?lastname=${encodeURIComponent(lastname)}`)
+      if (!response.ok) {
+        console.log("error")
+        throw new Error('Failed to fetch actors');
+      }
+      const actors = await response.json();
+      return actors;
+    } catch (error) {
+      console.error('Error fetching actors:', error);
+      return [];
+    }
+  }
+
   async addActor(actor: Actor): Promise<Actor | null> {
     try {
       const response = await fetch(`${this.urlActor}/add-actor`, {
