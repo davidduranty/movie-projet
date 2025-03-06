@@ -36,6 +36,20 @@ export class ProductorComponent implements OnInit {
       console.error('Error find productor:', error);
     };
   }
+  async searchById(id: string): Promise<void> {
+    const inputId = Number(id)
+    try {
+      const productorId = await this.productorService.getById(inputId)
+      if (productorId) {
+        this.productors = [productorId]
+      } else {
+        console.warn('No movie found with the given ID')
+        this.productors = []
+      }
+    } catch (error) {
+      console.error('Error finding productor by id:', error);
+    }
+  }
   onAddProductor() {
     this.isAddProductor = true
   }

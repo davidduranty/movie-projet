@@ -54,18 +54,20 @@ class ProductorService {
     return productors
   }
 
-  public async get(id: number): Promise<ProductorDto[]> {
-    const productors = await this._productorService.find(
+  public async get(id: number): Promise<ProductorDto> {
+    const productors = await this._productorService.findOne(
       { id: id },
       {
         populate: ['actors'],
         populateOrderBy: { actors: { id: QueryOrder.ASC } },
         strategy: LoadStrategy.SELECT_IN,
-        limit: 10,
         offset: 0,
         orderBy: { id: QueryOrder.ASC },
       },
     );
+    if (!productors) {
+      throw new HttpException(`no movies found`, HttpStatus.NOT_FOUND);
+    }
     return productors;
   }
 

@@ -37,6 +37,18 @@ export class ProductorService {
       return [];
     }
   }
+  async getById(id: number): Promise<Productor | null> {
+    try {
+      const response = await fetch(`${this.urlProductor}/id/${id}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch constructor by id');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l id :', error);
+      return null
+    }
+  }
 
   async addProductor(productor: Productor): Promise<Productor | null> {
     try {
