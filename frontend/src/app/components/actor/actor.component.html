@@ -3,9 +3,11 @@
 }
 
 <div class="inputSearch">
-  <input #lastnameInput type="text" class="form-control" id="search-text" aria-describedby="search-text"
-    placeholder="Enter text to search" autofocus>
-  <button (click)="searchActor(lastnameInput.value)">Rechercher</button>
+  <form (submit)="searchActor(lastnameInput.value)">
+    <input #lastnameInput type="text" class="form-control" id="search-text" aria-describedby="search-text"
+      placeholder="Enter text to search" autofocus />
+    <button class="btn-search" (click)="searchActor(lastnameInput.value)">Rechercher</button>
+  </form>
 </div>
 <main>
   <table>
