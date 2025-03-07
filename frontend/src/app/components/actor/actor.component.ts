@@ -42,6 +42,20 @@ export class ActorComponent implements OnInit {
   onCloseAddActor() {
     this.isAddActor = false;
   }
+  async searchById(id: string): Promise<void> {
+    const inputId = Number(id)
+    try {
+      const productorId = await this.actorService.getById(inputId)
+      if (productorId) {
+        this.actors = [productorId]
+      } else {
+        console.warn('No actor found with the given ID')
+        this.actors = []
+      }
+    } catch (error) {
+      console.error('Error finding actor by id:', error);
+    }
+  }
   async onActorAdded(newActor: Actor): Promise<void> {
     this.actors.push(newActor);
     this.onCloseAddActor();

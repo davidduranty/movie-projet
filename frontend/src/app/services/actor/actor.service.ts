@@ -41,6 +41,18 @@ export class ActorService {
       return [];
     }
   }
+  async getById(id: number): Promise<Actor | null> {
+    try {
+      const response = await fetch(`${this.urlActor}/id/${id}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch actor by id');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l id :', error);
+      return null
+    }
+  }
 
   async addActor(actor: Actor): Promise<Actor | null> {
     try {

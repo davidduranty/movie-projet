@@ -106,6 +106,7 @@ button:nth-child(2) {
 .container-input-search {
   display: flex;
   height: 100px;
+  width: 100%;
 }
 
 .input-container {

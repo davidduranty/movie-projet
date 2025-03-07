@@ -9,14 +9,16 @@
           productor</label>
         <input #inputProductor type="text" class="form-control" id="search-text" aria-describedby="search-text"
           placeholder="Enter productor to search" autofocus style="height: 30px;">
-        <button class="btn-add" (click)="searchProductor(inputProductor.value)">Valid</button>
       </div>
+      <button class="btn-add" (click)="searchProductor(inputProductor.value)">Valid</button>
+
       <div class="input-container">
         <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by
           id</label>
         <input #inputId type="text" class="form-control" id="search-id" placeholder="Enter id to search"
           style="height: 30px;margin-left: 10px;">
       </div>
+
       <button class="btn-add" (click)="searchById(inputId.value)">Valid</button>
       <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
     </div>
