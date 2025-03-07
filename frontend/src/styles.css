@@ -105,6 +105,8 @@ button:nth-child(2) {
 
 .container-input-search {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100px;
   width: 100%;
 }
@@ -128,4 +130,13 @@ label {
 .btn-search {
   margin-left: 20px;
   border-radius: 5px;
+}
+
+.select {
+  margin: 25px 0 0 10px;
+  height: 30px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border-radius: 5px;
+  border: none;
+  background: rgb(236, 232, 232);
 }
