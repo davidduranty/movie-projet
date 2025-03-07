@@ -43,7 +43,7 @@ export class ProductorComponent implements OnInit {
       if (productorId) {
         this.productors = [productorId]
       } else {
-        console.warn('No movie found with the given ID')
+        console.warn('No actor found with the given ID')
         this.productors = []
       }
     } catch (error) {

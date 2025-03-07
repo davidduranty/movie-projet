@@ -32,7 +32,7 @@ class ActorController {
     return await this._actorService.getAll();
   }
 
-  @Get(':id')
+  @Get('id/:id')
   @ApiOperation({
     summary: 'Get a actor by id',
   })

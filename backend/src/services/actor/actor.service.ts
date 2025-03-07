@@ -36,8 +36,8 @@ class ActorService {
     return actors;
   }
 
-  public async getById(id: number): Promise<Actor> {
-    const actors = await this._actorService.find(
+  public async getById(id: number): Promise<ActorDto> {
+    const actors = await this._actorService.findOne(
       { id: id },
       {
         populate: ['productor', 'dataMovies'],
@@ -45,10 +45,10 @@ class ActorService {
         strategy: LoadStrategy.SELECT_IN,
       },
     );
-    if (!actors || actors.length === 0) {
+    if (!actors) {
       throw new HttpException(`no actors found`, HttpStatus.NOT_FOUND);
     }
-    return actors[0];
+    return actors;
   }
   public async getByCountry(country?: string): Promise<ActorDto[]> {
     const filters: FilterQuery<Actor> = {};

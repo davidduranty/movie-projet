@@ -1,6 +1,8 @@
 .btn-add {
   background: rgb(55, 147, 55);
   color: #fff;
+  margin-left: 10px;
+  border-radius: 5px;
 }
 
 .btn-add,
