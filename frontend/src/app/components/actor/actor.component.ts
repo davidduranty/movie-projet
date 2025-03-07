@@ -3,16 +3,18 @@ import { ActorService } from '../../services/actor/actor.service';
 import { Actor } from '../../models/actor.model';
 import { NewActorComponent } from './new-actor/new-actor.component';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-actor',
-  imports: [NewActorComponent, FormsModule],
+  imports: [NewActorComponent, FormsModule, CommonModule],
   templateUrl: './actor.component.html',
   styleUrl: './actor.component.css'
 })
 export class ActorComponent implements OnInit {
 
   actors: Actor[] = [];
+  uniqueCountries: string[] = [];
   isAddActor: boolean = false
 
   constructor(private actorService: ActorService) { }
@@ -21,7 +23,11 @@ export class ActorComponent implements OnInit {
     this.actorService.getAllActors().then(
       (actorsArray: Actor[]) => {
         this.actors = actorsArray;
+        this.uniqueCountries = [
+          ...new Set(this.actors.map((actor) => actor.country))
+        ];
       }
+
     ).catch(error => {
       console.error('Error loading actors:', error);
     });

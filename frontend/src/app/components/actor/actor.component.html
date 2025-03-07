@@ -21,6 +21,11 @@
 
       <button class="btn-add" (click)="searchById(inputId.value)">Valid</button>
       <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
+      <select class="select" name="country" id="country">
+        <option class="option" *ngFor="let country of uniqueCountries" [value]="country">
+          {{ country }}
+        </option>
+      </select>
     </div>
   </form>
 </div>

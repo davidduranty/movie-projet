@@ -3,15 +3,17 @@ import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie/movie.service';
 import { NewMovieComponent } from './new-movie/new-movie.component';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-movie',
-  imports: [NewMovieComponent, FormsModule],
+  imports: [NewMovieComponent, FormsModule, CommonModule],
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
 export class MovieComponent implements OnInit {
+  uniqueGenre: string[] = []
   movies: Movie[] = [];
   isAddMovie: boolean = false;
 
@@ -22,6 +24,9 @@ export class MovieComponent implements OnInit {
     this.movieService.getAllMovies().then(
       (moviesArray: Movie[]) => {
         this.movies = moviesArray
+        this.uniqueGenre = [
+          ...new Set(this.movies.map((movie) => movie.genre))
+        ];
       }
     ).catch(error => {
       console.error('Error loading movies:', error)
