@@ -18,7 +18,8 @@
       </div>
       <button class="btn-add" (click)="searchId(inputId.value)">Valid</button>
       <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
-      <select class="select" name="country" id="country">
+      <select class="select" name="country" id="country" [(ngModel)]="selectedGenre" (change)="getByGenre()">
+        <option value="">-- Sélectionner un genre --</option>
         <option class="option" *ngFor="let genre of uniqueGenre" [value]="genre">
           {{ genre }}
         </option>

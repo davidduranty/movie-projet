@@ -85,6 +85,23 @@ class MovieController {
     }
     return result;
   }
+  @Get('genre')
+  @ApiOperation({
+    summary: 'Get a movie by genre',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'A movie by genre',
+  })
+  public async getByGenre(
+    @Query('genre') genre: string
+  ): Promise<MovieDto[]> {
+    const result = await this._movieService.getByGenre(genre)
+    if (!result) {
+      throw new NotFoundException('No movies found by genre');
+    }
+    return result
+  }
 
   @Get('filter-by-date')
   @ApiOperation({
