@@ -41,6 +41,23 @@ export class ActorService {
       return [];
     }
   }
+  async getByCountry(country: string): Promise<Actor[]> {
+    if (!country) {
+      console.error('Error: Lastname parameter is required');
+      return this.getAllActors();
+    }
+    try {
+      const response = await fetch(`${this.urlActor}/country?country=${country}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch actors by country');
+      }
+      const actors = await response.json();
+      return actors;
+    } catch (error) {
+      console.error('Error fetching actors:', error);
+      return [];
+    }
+  }
   async getById(id: number): Promise<Actor | null> {
     try {
       const response = await fetch(`${this.urlActor}/id/${id}`)

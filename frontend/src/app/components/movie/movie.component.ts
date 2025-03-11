@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class MovieComponent implements OnInit {
   uniqueGenre: string[] = []
   movies: Movie[] = [];
+  selectedGenre: string = '';
   isAddMovie: boolean = false;
 
 
@@ -40,6 +41,17 @@ export class MovieComponent implements OnInit {
     } catch (error) {
       console.error('Error find movie:', error);
     };
+  }
+  async getByGenre(): Promise<void> {
+    if (!this.selectedGenre) {
+      this.movies = []
+    }
+    try {
+      const byGenre = await this.movieService.getByGenre(this.selectedGenre)
+      this.movies = byGenre
+    } catch (error) {
+      console.error('Erreur lors de la récupération des films par genre:', error);
+    }
   }
   async searchId(inputValue: string): Promise<void> {
     const id = Number(inputValue)

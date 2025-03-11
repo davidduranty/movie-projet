@@ -49,6 +49,21 @@ class MovieService {
     });
     return movies;
   }
+  public async getByGenre(genre: string): Promise<MovieDto[]> {
+    let movieName: FilterQuery<Movie> = {};
+    if (genre) {
+      movieName['genre'] = { $ilike: `%${genre}%` };
+    }
+    const movies = await this._movieService.find(movieName, {
+      populate: ['actor'],
+      populateOrderBy: { actor: { id: QueryOrder.ASC } },
+      strategy: LoadStrategy.SELECT_IN,
+      limit: 10,
+      offset: 0,
+      orderBy: { id: QueryOrder.ASC },
+    });
+    return movies;
+  }
 
   public async getById(id: number): Promise<MovieDto> {
     const movie = await this._movieService.findOne(

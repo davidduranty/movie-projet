@@ -9,12 +9,13 @@ import { CommonModule } from '@angular/common';
   selector: 'app-actor',
   imports: [NewActorComponent, FormsModule, CommonModule],
   templateUrl: './actor.component.html',
-  styleUrl: './actor.component.css'
+  styleUrls: ['./actor.component.css']
 })
 export class ActorComponent implements OnInit {
 
   actors: Actor[] = [];
   uniqueCountries: string[] = [];
+  selectedCountry: string = '';
   isAddActor: boolean = false
 
   constructor(private actorService: ActorService) { }
@@ -41,6 +42,21 @@ export class ActorComponent implements OnInit {
     } catch (error) {
       console.error('Error find actors:', error);
     };
+  }
+
+  async getByCountry(): Promise<void> {
+    if (!this.selectedCountry) {
+      console.warn('Aucun pays sélectionné.');
+      this.actors = [];
+      return;
+    }
+
+    try {
+      const actorListByCountry = await this.actorService.getByCountry(this.selectedCountry);
+      this.actors = actorListByCountry ?? [];
+    } catch (error) {
+      console.error('Erreur lors de la récupération des acteurs par pays:', error);
+    }
   }
   onAddActor() {
     this.isAddActor = true;

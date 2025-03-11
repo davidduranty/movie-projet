@@ -40,6 +40,21 @@ export class MovieService {
       return [];
     }
   }
+
+  async getByGenre(genre: string): Promise<Movie[]> {
+    try {
+      const response = await fetch(`${this.urlMovie}/genre?genre=${genre}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch movies by genre');
+      }
+      const movies = await response.json();
+      return movies;
+    } catch (error) {
+      console.error('Error fetching movies by genre:', error);
+      return [];
+    }
+  }
+
   async getById(id: number): Promise<Movie | null> {
     try {
       const response = await fetch(`${this.urlMovie}/id/${id}`)
