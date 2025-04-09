@@ -65,7 +65,8 @@ class ActorController {
   })
   public async post(
     @Body(new ValidationPipe())
-    data: ActorDto) {
+    data: ActorDto,
+  ) {
     console.log('📥 Données reçues:', data);
     return await this._actorService.post(data);
   }
@@ -91,12 +92,14 @@ class ActorController {
     status: HttpStatus.OK,
     description: 'A actor by name',
   })
-  public async getName(@Query('lastname') lastname: string): Promise<ActorDto[]> {
+  public async getName(
+    @Query('lastname') lastname: string,
+  ): Promise<ActorDto[]> {
     const result = await this._actorService.getByName(lastname);
     if (!result) {
-      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`)
+      throw new Error(`Actor ${HttpStatus.NOT_FOUND}`);
     }
-    return result
+    return result;
   }
 
   @Delete(':id')

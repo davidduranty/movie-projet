@@ -1,7 +1,7 @@
 @if(isAddActor) {
 <app-new-actor (close)="onCloseAddActor()" (actorAdded)="onActorAdded($event)" />
 }
-
+@defer (on interaction) {
 <div class="inputSearch">
   <form>
     <div class="container-input-search">
@@ -30,6 +30,12 @@
     </div>
   </form>
 </div>
+}@placeholder {
+<div class="defer">
+  <button type="button" class="btn-filtre">Filtre</button>
+</div>
+}
+
 <main>
   <table>
     <thead>
@@ -52,10 +58,14 @@
         <td>{{actor.start}}</td>
         <td>{{actor.end}}</td>
         <td>{{actor.country}}</td>
+        @defer (on hover) {
         <td class="btn">
           <button type="button" (click)="deleteActor(actor.id)">Remove</button>
           <button>Modify</button>
         </td>
+        } @placeholder {
+        <button>Open</button>
+        }
       </tr>
       }
 
@@ -64,4 +74,9 @@
 </main>
 <div class="btn-add-contain">
   <button class="btn-add" (click)="onAddActor()">Add</button>
+</div>
+<div class="data">
+  @for(data of productors; track data.id) {
+  <p>{{data.lastname}}</p>
+  }
 </div>
