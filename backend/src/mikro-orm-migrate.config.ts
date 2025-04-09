@@ -1,9 +1,9 @@
 
-import  { config } from './mikro-orm.config';
+import { config } from './mikro-orm.config';
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations'
- 
 
- 
+
+
 const migrationConfig = {
   ...config,
   entities: ['backend/src/**/*.entity.ts'],

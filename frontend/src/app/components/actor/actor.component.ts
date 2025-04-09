@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Productor } from '../../models/productor.model';
 
+
 @Component({
   selector: 'app-actor',
   imports: [NewActorComponent, FormsModule, CommonModule],
@@ -17,7 +18,8 @@ export class ActorComponent implements OnInit {
   actors: Actor[] = [];
   uniqueCountries: string[] = [];
   selectedCountry: string = '';
-  isAddActor: boolean = false
+  isAddActor: boolean = false;
+
 
   constructor(private actorService: ActorService) { }
 
@@ -28,12 +30,14 @@ export class ActorComponent implements OnInit {
         this.uniqueCountries = [
           ...new Set(this.actors.map((actor) => actor.country))
         ];
+
       }
 
     ).catch(error => {
       console.error('Error loading actors:', error);
     });
   }
+
   async searchActor(lastname: string): Promise<void> {
     try {
       const actorList = this.actorService.getByLastname(lastname)
@@ -66,7 +70,7 @@ export class ActorComponent implements OnInit {
     this.isAddActor = false;
   }
   async searchById(id: string): Promise<void> {
-    const inputId = Number(id)
+    const inputId = parseInt(id, 10)
     try {
       const productorId = await this.actorService.getById(inputId)
       if (productorId) {

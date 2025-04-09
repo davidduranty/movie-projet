@@ -1,6 +1,7 @@
 @if(isAddActor) {
 <app-new-actor (close)="onCloseAddActor()" (actorAdded)="onActorAdded($event)" />
 }
+
 @defer (on interaction) {
 <div class="inputSearch">
   <form>
@@ -16,11 +17,13 @@
         <label for="search-text" style="font-family: Georgia, 'Times New Roman', Times, serif;">Search by
           id</label>
         <input #inputId type="text" class="form-control" id="search-id" placeholder="Enter id to search"
-          style="height: 30px;margin-left: 10px;">
+          style="height: 30px;margin-left: 10px;" />
       </div>
 
       <button class="btn-add" (click)="searchById(inputId.value)">Valid</button>
+      @if(inputId.value || inputActor.value) {
       <button type="button" class="btn-search" (click)="ngOnInit()">Cancel</button>
+      }
       <select class="select" name="country" id="country" [(ngModel)]="selectedCountry" (change)="getByCountry()">
         <option value="">-- Sélectionner un pays --</option>
         <option class="option" *ngFor="let country of uniqueCountries ?? []" [value]="country">
@@ -58,7 +61,7 @@
         <td>{{actor.start}}</td>
         <td>{{actor.end}}</td>
         <td>{{actor.country}}</td>
-        @defer (on hover) {
+        @defer (on interaction) {
         <td class="btn">
           <button type="button" (click)="deleteActor(actor.id)">Remove</button>
           <button>Modify</button>
