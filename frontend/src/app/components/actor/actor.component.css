@@ -10,3 +10,20 @@
   margin-top: 25px;
   height: 30px;
 }
+.data{
+  border: 1px solid red;
+  height: 20px;
+}
+.defer {
+  margin: 10px 0;
+  text-align: center;
+}
+.btn-filtre {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 0.35rem 1.25rem;
+  border-radius: 4px;
+  background-color: #450d80;
+}
+

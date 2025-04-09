@@ -14,7 +14,6 @@ import { ProductorDto } from '../../models/productor.dto';
 import { ProductorService } from '../../services/productor/productor.service';
 import { HttpStatus } from '../../utils/http-status';
 
-
 @Controller('productors')
 class ProductorController {
   constructor(private readonly _productorService: ProductorService) { }
@@ -32,7 +31,7 @@ class ProductorController {
     if (!result) {
       throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
     }
-    return result
+    return result;
   }
   @Get()
   @ApiOperation({
@@ -42,12 +41,15 @@ class ProductorController {
     status: HttpStatus.OK,
     description: 'A productor by lastname',
   })
-  public async getByName(@Query('lastname') lastname: string): Promise<ProductorDto[]> {
-    const result = this._productorService.getByName(lastname)
+  public async getByName(
+    @Query('lastname') lastname: string,
+  ): Promise<ProductorDto[]> {
+    const result = this._productorService.getByName(lastname);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     if (!result) {
-      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`)
+      throw new Error(`Productor ${HttpStatus.NOT_FOUND}`);
     }
-    return result
+    return result;
   }
 
   @Get('id/:id')
@@ -81,9 +83,7 @@ class ProductorController {
     description: 'A productor add',
     type: ProductorDto,
   })
-  public async post(
-    @Body(new ValidationPipe()) data: ProductorDto,
-  ) {
+  public async post(@Body(new ValidationPipe()) data: ProductorDto) {
     console.log('📥 Données reçues:', data);
     return await this._productorService.post(data);
   }

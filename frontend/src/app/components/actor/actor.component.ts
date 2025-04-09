@@ -4,6 +4,7 @@ import { Actor } from '../../models/actor.model';
 import { NewActorComponent } from './new-actor/new-actor.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Productor } from '../../models/productor.model';
 
 @Component({
   selector: 'app-actor',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./actor.component.css']
 })
 export class ActorComponent implements OnInit {
-
+  productors: Productor[] = [];
   actors: Actor[] = [];
   uniqueCountries: string[] = [];
   selectedCountry: string = '';
